@@ -6,15 +6,19 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-public class TeamOptionsGUI implements CommandExecutor {
+public class TeamOptionsGUI implements Listener, CommandExecutor {
 
     static void renderInv(Inventory gui){
 
@@ -56,6 +60,8 @@ public class TeamOptionsGUI implements CommandExecutor {
         tpd_lore.add("§eKlicke um TeamTeleport zu");
         tpd_lore.add("§edeaktivieren.");
         tpd_meta.setLore(tpd_lore);
+        tpd_meta.addEnchant(Enchantment.DURABILITY, 0, true);
+        tpd_meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         tpd.setItemMeta(tpd_meta);
 
         ItemMeta inve_meta = inve.getItemMeta();
@@ -74,6 +80,8 @@ public class TeamOptionsGUI implements CommandExecutor {
         invd_lore.add("§eKlicke um TeamInventar zu");
         invd_lore.add("§edeaktivieren");
         invd_meta.setLore(invd_lore);
+        invd_meta.addEnchant(Enchantment.DURABILITY, 0, true);
+        invd_meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         invd.setItemMeta(invd_meta);
 
         ItemMeta chate_meta = chate.getItemMeta();
@@ -92,23 +100,30 @@ public class TeamOptionsGUI implements CommandExecutor {
         chatd_lore.add("§eKlicke um es zu");
         chatd_lore.add("§edeaktivieren");
         chatd_meta.setLore(chatd_lore);
+        chatd_meta.addEnchant(Enchantment.DURABILITY, 0, true);
+        chatd_meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         chatd.setItemMeta(chatd_meta);
 
         for(int i = 0; i < 27; i++){
             gui.setItem(i, none);
         }
-        gui.setItem(10, tpe);
-        gui.setItem(13, inve);
-        gui.setItem(16, chate);
+        if(Manhunt.ttp)
+            gui.setItem(10, tpd);
+        else
+            gui.setItem(10, tpe);
     }
-
+    @EventHandler
     public void onClick(InventoryClickEvent e){
         if(e.getView().getTitle().equalsIgnoreCase("§b§lTeam Options")){
             e.setCancelled(true);
             if(e.getCurrentItem().hasItemMeta()){
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§3§lTeamTeleport §7§l¦ §c§lINAKTIV")){
-
+                    Manhunt.ttp = true;
                 }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§3§lTeamTeleport §7§l¦ §a§lAKTIV")){
+                    Manhunt.ttp = false;
+                }
+                renderInv(e.getInventory());
             }
         }
     }

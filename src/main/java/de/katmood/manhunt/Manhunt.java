@@ -74,6 +74,9 @@ public class Manhunt extends JavaPlugin {
     public static boolean teamchat = true;
     public static boolean timerenabled = true;
     public static boolean timerpaused = false;
+    public static boolean ttp = true;
+    public static boolean tinv = true;
+    public static boolean tchat = true;
 
     public static int time;
 
@@ -134,6 +137,7 @@ public class Manhunt extends JavaPlugin {
         pm.registerEvents(new PlayerChatEvent(), this);
         pm.registerEvents(new TimerOptionsGUI(), this);
         pm.registerEvents(new ManhuntSetCommand(), this);
+        pm.registerEvents(new TeamOptionsGUI(), this);
 
     }
 
