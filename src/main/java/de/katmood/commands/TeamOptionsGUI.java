@@ -150,7 +150,7 @@ public class TeamOptionsGUI implements Listener, CommandExecutor {
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§lTeamChat §7§l¦ §a§lAKTIV")){
                     Manhunt.tchat = false;
-                    Manhunt.saveTeamConfig
+                    Manhunt.saveTeamConfig();
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cClose")){
                     p.closeInventory();
