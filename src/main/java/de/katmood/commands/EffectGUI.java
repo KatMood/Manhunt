@@ -27,7 +27,7 @@ public class EffectGUI implements CommandExecutor{
 	
 	
 	public static Inventory generateEveryEffectInventory() {
-		Inventory toReturn = Bukkit.createInventory(null, 9*3);
+		Inventory toReturn = Bukkit.createInventory(null, 9*4);
 		
 		
 		int index = 0;
