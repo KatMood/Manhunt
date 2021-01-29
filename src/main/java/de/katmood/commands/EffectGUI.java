@@ -44,17 +44,30 @@ public class EffectGUI implements CommandExecutor{
 		
 		//Invalid TeamID
 		try {throw new InvalidTeamIDException();} catch (Exception e) {}
-		return null;
+		return huntedEffects;
 	}
 	
 
+	
+	static Inventory selectTeamInventory() {
+		Inventory toReturn = Bukkit.createInventory(null, 3*9,  ChatColor.BLUE+"Teamauswahl");
+		
+		
+		
+		
+		
+		
+		return toReturn;
+	}
 	
 	static Inventory generateEveryEffectInventory(String team) {
 		Inventory toReturn = Bukkit.createInventory(null, 9*4, ChatColor.BLUE+"Effektte für das Team "+team+" zuweisen!");
 		
 		int index = 0;
+		int currentEffectLevel = -1;
 		for(PotionEffectType cpt : PotionEffectType.values()) {
-			int currentEffectLevel = getTeamEffectsByTeamID(team).get(cpt);		//Get from HashMap
+			if(getTeamEffectsByTeamID(team).containsKey(cpt)) 
+				currentEffectLevel = getTeamEffectsByTeamID(team).get(cpt);
 			index++;
 			ItemStack currentPotion = new ItemStack(Material.POTION, 1);
 			PotionMeta currentPotionMeta = (PotionMeta) currentPotion.getItemMeta();
