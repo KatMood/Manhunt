@@ -101,9 +101,11 @@ public class TimerOptionsGUI implements Listener, CommandExecutor {
             if(e.getCurrentItem().hasItemMeta()){
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§5§lTimer §7§l¦ §a§lAktiv")) {
                     Manhunt.timerenabled = false;
+                    Manhunt.saveTimer();
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§5§lTimer §7§l¦ §c§lInaktiv")) {
                     Manhunt.timerenabled = true;
+                    Manhunt.saveTimer();
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cClose")){
                     p.closeInventory();

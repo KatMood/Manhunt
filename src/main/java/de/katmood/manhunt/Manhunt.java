@@ -96,13 +96,17 @@ public class Manhunt extends JavaPlugin {
 
     public static void saveTimer() {
 
-        plugin.getConfig().set(Timer+".enabled", timerenabled);
+        plugin.getConfig().set(Timer+".Enabled", timerenabled);
+        plugin.getConfig().set(Timer+".Paused", timerpaused);
+        plugin.getConfig().set(Timer+".Time", time);
         plugin.saveConfig();
 
     }
 
     public static void loadTimer() {
-        timerenabled = plugin.getConfig().getBoolean(timer+".enabled");
+        timerenabled = plugin.getConfig().getBoolean(Timer+".Enabled");
+        timerpaused = plugin.getConfig().getBoolean(Timer+".Paused");
+        time = plugin.getConfig().getInt(Timer+".Time");
     }
 
     public static void saveHunted() {
@@ -160,7 +164,7 @@ public class Manhunt extends JavaPlugin {
     @Override
     public void onDisable() {
        saveHunted();
-       saveTimer();
        saveTeamConfig();
+       saveTimer();
     }
 }

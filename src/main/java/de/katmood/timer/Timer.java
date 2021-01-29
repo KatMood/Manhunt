@@ -31,8 +31,7 @@ public class Timer {
                 StringBuilder message = new StringBuilder("§7§lTimer:§a§l ");
                 message.append(String.format("%02d", hours)).append(":");
                 message.append(String.format("%02d", minutes)).append(":");
-                message.append(String.format("%02d", seconds)).append(":");
-                message.append(String.format("%02d", milliseconds));
+                message.append(String.format("%02d", seconds));
 
                 if(Manhunt.timerpaused) {
                     message.append(" §c(pausiert)");
