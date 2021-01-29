@@ -1,0 +1,40 @@
+name: Manhunt
+version: ${project.version}
+main: de.katmood.manhunt.Manhunt
+api-version: 1.16
+authors: [ KatMood ]
+description: Ein Privates Mahunt Plugin
+commands:
+  manhuntset:
+    description: Setze die gejagten Spieler
+    aliases:
+      - mhs
+
+  manhuntsetgui:
+
+  manhuntlist:
+    description: Zeige die gejagten Spieler an
+    aliases:
+      - mhl
+
+  heal:
+
+  menu:
+    description: Oeffnet das Menu
+
+  timeroptionsgui:
+    description: Oeffnet das GUI fuer Timer-Optionen
+    aliases:
+      - tgui
+
+  timer:
+
+  manhuntdelete:
+    aliases:
+      - mhrem
+
+  teamoptionsgui:
+    aliases:
+      - togui
+
+  effectgui:
