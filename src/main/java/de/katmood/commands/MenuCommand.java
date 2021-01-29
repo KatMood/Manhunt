@@ -2,7 +2,6 @@ package de.katmood.commands;
 
 import de.katmood.manhunt.Manhunt;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -112,8 +111,8 @@ public class MenuCommand implements Listener, CommandExecutor {
             info_meta.setDisplayName("§a§lInfo");
             ArrayList<String> info_lore = new ArrayList<>();
             info_lore.add("§cGejagte:");
-            for(int i = 0; i < Manhunt.getHuteds().size(); i++) {
-                info_lore.add("§7- "+Manhunt.getHuteds().get(i));
+            for(int i = 0; i < Manhunt.getHunteds().size(); i++) {
+                info_lore.add("§7- "+Manhunt.getHunteds().get(i));
             }
             info_meta.setLore(info_lore);
             info.setItemMeta(info_meta);

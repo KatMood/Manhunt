@@ -11,7 +11,7 @@ public class JoinEvent implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player p = e.getPlayer();
-        if(!(Manhunt.getHuteds().contains(p))){
+        if(!(Manhunt.getHunteds().contains(p))){
             Manhunt.Hunted.put(p.getName(), false);
         }
     }

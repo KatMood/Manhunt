@@ -18,13 +18,34 @@ public class Manhunt extends JavaPlugin {
 
     public static HashMap<String, Boolean> Hunted = new HashMap<>();
 
-    public static ArrayList<String> getHuteds() {
-        ArrayList<String> huteds = new ArrayList<>();
+    public static ArrayList<String> getHunteds() {
+        ArrayList<String> hunteds = new ArrayList<>();
         for(String ck : Hunted.keySet()) {
             if(Hunted.get(ck))
-                huteds.add(ck);
+                hunteds.add(ck);
         }
-        return huteds;
+        return hunteds;
+    }
+
+    public static ArrayList<String> getHunters() {
+        ArrayList<String> hunters = new ArrayList<>();
+        for(String ck : Hunted.keySet()) {
+            if(!Hunted.get(ck))
+                hunters.add(ck);
+        }
+        return hunters;
+    }
+
+    public static ArrayList<String> getOnlineHunters() {
+        ArrayList<String> hunters = new ArrayList<>();
+        for(String ck : Hunted.keySet()) {
+            if(!Hunted.get(ck)) {
+                if(Bukkit.getPlayer(ck) != null)
+                    hunters.add(ck);
+            }
+
+        }
+        return hunters;
     }
 
     public static Timer timer = new Timer();
