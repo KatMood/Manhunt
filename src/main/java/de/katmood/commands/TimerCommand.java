@@ -2,7 +2,6 @@ package de.katmood.commands;
 
 import de.katmood.manhunt.Manhunt;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,7 +15,7 @@ public class TimerCommand implements CommandExecutor {
 
             if(args.length == 1 && args[0].equalsIgnoreCase("start")){
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    Manhunt.timer.start(p);
+                    Manhunt.timer.start();
                     return true;
                 }
             }
