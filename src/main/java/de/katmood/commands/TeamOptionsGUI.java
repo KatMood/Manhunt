@@ -27,8 +27,8 @@ public class TeamOptionsGUI implements Listener, CommandExecutor {
         ItemStack back = new ItemStack(Material.ARROW);
         ItemStack tpe = new ItemStack(Material.ENDER_PEARL);
         ItemStack tpd = new ItemStack(Material.ENDER_PEARL);
-        ItemStack inve = new ItemStack(Material.CHEST);
-        ItemStack invd = new ItemStack(Material.CHEST);
+        ItemStack inve = new ItemStack(Material.BARREL);
+        ItemStack invd = new ItemStack(Material.BARREL);
         ItemStack chate = new ItemStack(Material.OAK_SIGN);
         ItemStack chatd = new ItemStack(Material.OAK_SIGN);
 
@@ -107,6 +107,8 @@ public class TeamOptionsGUI implements Listener, CommandExecutor {
         for(int i = 0; i < 27; i++){
             gui.setItem(i, none);
         }
+        gui.setItem(21, back);
+        gui.setItem(22, close);
         if(Manhunt.ttp)
             gui.setItem(10, tpd);
         else
@@ -115,23 +117,47 @@ public class TeamOptionsGUI implements Listener, CommandExecutor {
             gui.setItem(13, invd);
         else
             gui.setItem(13, inve);
+        if(Manhunt.tchat)
+            gui.setItem(16, chatd);
+        else
+            gui.setItem(16, chate);
     }
     @EventHandler
     public void onClick(InventoryClickEvent e){
+        Player p = (Player) e.getWhoClicked();
         if(e.getView().getTitle().equalsIgnoreCase("§b§lTeam Options")){
             e.setCancelled(true);
             if(e.getCurrentItem().hasItemMeta()){
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§3§lTeamTeleport §7§l¦ §c§lINAKTIV")){
                     Manhunt.ttp = true;
+                    Manhunt.saveTeamConfig();
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§3§lTeamTeleport §7§l¦ §a§lAKTIV")){
                     Manhunt.ttp = false;
+                    Manhunt.saveTeamConfig();
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§2§lTeamInventar §7§l¦ §c§lINAKTIV")){
                     Manhunt.tinv = true;
+                    Manhunt.saveTeamConfig();
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§2§lTeamInventar §7§l¦ §a§lAKTIV")){
                     Manhunt.tinv = false;
+                    Manhunt.saveTeamConfig();
+                }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§lTeamChat §7§l¦ §c§lINAKTIV")){
+                    Manhunt.tchat = true;
+                    Manhunt.saveTeamConfig();
+                }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§lTeamChat §7§l¦ §a§lAKTIV")){
+                    Manhunt.tchat = false;
+                    Manhunt.saveTeamConfig
+                }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cClose")){
+                    p.closeInventory();
+                }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§fBack")){
+                    p.closeInventory();
+                    p.performCommand("menu");
                 }
                 renderInv(e.getInventory());
             }

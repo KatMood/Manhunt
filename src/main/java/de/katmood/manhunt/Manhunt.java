@@ -35,6 +35,7 @@ public class Manhunt extends JavaPlugin {
     public static String HuntPath = "Hunted";
     public static String pdata = "PLAYERDATA";
     public static String Timer = "TIMER";
+    public static String Teamops = "TeamOptions";
     public static String shortInteger(int duration) {
         String string = "";
         int hours = 0;
@@ -80,6 +81,19 @@ public class Manhunt extends JavaPlugin {
 
     public static int time;
 
+    public static void saveTeamConfig(){
+        plugin.getConfig().set(Teamops+".TeamTeleport", ttp);
+        plugin.getConfig().set(Teamops+".TeamInventory", tinv);
+        plugin.getConfig().set(Teamops+".TeamChat", tchat);
+        plugin.saveConfig();
+    }
+
+    public static void loadTeamConfig(){
+        ttp = plugin.getConfig().getBoolean(Teamops+".TeamTeleport");
+        tinv = plugin.getConfig().getBoolean(Teamops+".TeamInventory");
+        tchat = plugin.getConfig().getBoolean(Teamops+".TeamChat");
+    }
+
     public static void saveTimer() {
 
         plugin.getConfig().set(Timer+".enabled", timerenabled);
@@ -121,6 +135,7 @@ public class Manhunt extends JavaPlugin {
         plugin=this;
         loadHunted();
         loadTimer();
+        loadTeamConfig();
 
         getCommand("manhuntset").setExecutor(new ManhuntSetCommand());
         getCommand("manhuntsetgui").setExecutor(new ManhuntSetCommand());
@@ -146,5 +161,6 @@ public class Manhunt extends JavaPlugin {
     public void onDisable() {
        saveHunted();
        saveTimer();
+       saveTeamConfig();
     }
 }
