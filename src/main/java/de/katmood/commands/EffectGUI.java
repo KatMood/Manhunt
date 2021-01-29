@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.libs.org.apache.commons.io.output.ThresholdingOutputStream;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -16,8 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import com.sun.org.apache.regexp.internal.recompile;
 
 /*
  * Infos:
@@ -50,7 +47,7 @@ public class EffectGUI implements CommandExecutor{
 		return null;
 	}
 	
-	
+
 	
 	static Inventory generateEveryEffectInventory(String team) {
 		Inventory toReturn = Bukkit.createInventory(null, 9*4, ChatColor.BLUE+"Effektte für das Team "+team+" zuweisen!");
@@ -62,6 +59,7 @@ public class EffectGUI implements CommandExecutor{
 			ItemStack currentPotion = new ItemStack(Material.POTION, 1);
 			PotionMeta currentPotionMeta = (PotionMeta) currentPotion.getItemMeta();
 			currentPotionMeta.addCustomEffect(new PotionEffect(cpt, 1, 1), false);
+			currentPotionMeta.setColor(cpt.getColor());
 			if(currentEffectLevel == 0) {//lvl: 0 (Effekt aus)
 				currentPotionMeta.setDisplayName(ChatColor.RED+""+cpt.getName()+" Effect!");
 			}else {		//lvl: >0 (Effekt an)
