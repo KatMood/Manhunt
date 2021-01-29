@@ -111,6 +111,10 @@ public class TeamOptionsGUI implements Listener, CommandExecutor {
             gui.setItem(10, tpd);
         else
             gui.setItem(10, tpe);
+        if(Manhunt.tinv)
+            gui.setItem(13, invd);
+        else
+            gui.setItem(13, inve);
     }
     @EventHandler
     public void onClick(InventoryClickEvent e){
@@ -122,6 +126,12 @@ public class TeamOptionsGUI implements Listener, CommandExecutor {
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§3§lTeamTeleport §7§l¦ §a§lAKTIV")){
                     Manhunt.ttp = false;
+                }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§2§lTeamInventar §7§l¦ §c§lINAKTIV")){
+                    Manhunt.tinv = true;
+                }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§2§lTeamInventar §7§l¦ §a§lAKTIV")){
+                    Manhunt.tinv = false;
                 }
                 renderInv(e.getInventory());
             }
