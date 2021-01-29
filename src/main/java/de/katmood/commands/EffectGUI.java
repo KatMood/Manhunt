@@ -61,7 +61,7 @@ public class EffectGUI implements CommandExecutor{
 	}
 	
 	static Inventory generateEveryEffectInventory(String team) {
-		Inventory toReturn = Bukkit.createInventory(null, 9*4, ChatColor.BLUE+"Effektte für das Team "+team+" zuweisen!");
+		Inventory toReturn = Bukkit.createInventory(null, 9*4, ChatColor.BLUE+"Effekte fÃ¼r das Team "+team+" zuweisen!");
 		
 		int index = 0;
 		int currentEffectLevel = -1;
