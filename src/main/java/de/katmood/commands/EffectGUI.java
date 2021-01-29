@@ -10,6 +10,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -27,8 +30,17 @@ import org.bukkit.potion.PotionEffectType;
  */
 
 
-public class EffectGUI implements CommandExecutor{
+public class EffectGUI implements CommandExecutor, Listener{
 
+	
+	
+	@EventHandler
+	public void onInventroyClick(InventoryClickEvent e) {
+		String invTitle = e.getView().getTitle();
+		
+		
+	}
+	
 	
 	public static final String TEAM_HUNTERS = "HUNTERS", TEAM_HUNTED = "HUNTED";
 	
@@ -50,9 +62,7 @@ public class EffectGUI implements CommandExecutor{
 
 	
 	static Inventory selectTeamInventory() {
-		Inventory toReturn = Bukkit.createInventory(null, 3*9,  ChatColor.BLUE+"Teamauswahl");
-		
-		
+		Inventory toReturn = Bukkit.createInventory(null, 2,  ChatColor.BLUE+"Teamauswahl");
 		
 		
 		
