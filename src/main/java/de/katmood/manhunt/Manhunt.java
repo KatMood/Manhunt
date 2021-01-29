@@ -151,6 +151,7 @@ public class Manhunt extends JavaPlugin {
         getCommand("manhuntdelete").setExecutor(new ManhuntSetCommand());
         getCommand("teamoptionsgui").setExecutor(new TeamOptionsGUI());
         getCommand("effectgui").setExecutor(new EffectGUI());
+        getCommand("teamteleport").setExecutor(new TeamTeleportCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);

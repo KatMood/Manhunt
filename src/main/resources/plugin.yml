@@ -38,3 +38,8 @@ commands:
       - togui
 
   effectgui:
+
+  teamteleport:
+    aliases:
+      - teamtp
+      - ttp
