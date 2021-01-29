@@ -5,6 +5,7 @@ import de.katmood.events.PlayerChatEvent;
 import de.katmood.timer.Timer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -49,6 +50,9 @@ public class Manhunt extends JavaPlugin {
     }
 
     public static Timer timer = new Timer();
+
+    public static Inventory huntedinv = Bukkit.createInventory(null, 9*3, "§a§lTeam Inventar");
+    public static Inventory hunterinv = Bukkit.createInventory(null, 9*3, "§a§lTeam Inventar");
 
     public static String prefix = "§7[§bKat§7] ";
     public static String lprefix = "§7§l[[§b§lKat§7§l] ";
@@ -173,6 +177,7 @@ public class Manhunt extends JavaPlugin {
         getCommand("teamoptionsgui").setExecutor(new TeamOptionsGUI());
         getCommand("effectgui").setExecutor(new EffectGUI());
         getCommand("teamteleport").setExecutor(new TeamTeleportCommand());
+        getCommand("teaminventory").setExecutor(new TeamInventoryCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);

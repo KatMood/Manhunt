@@ -43,3 +43,9 @@ commands:
     aliases:
       - teamtp
       - ttp
+
+  teaminventory:
+    aliases:
+      - teaminv
+      - tinv
+      - inv
