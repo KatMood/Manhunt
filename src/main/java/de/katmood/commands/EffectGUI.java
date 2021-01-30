@@ -1,4 +1,4 @@
-package de.katmood.commands;
+package main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,9 +32,11 @@ import org.bukkit.potion.PotionEffectType;
  */
 
 
-public class EffectGUI implements CommandExecutor, Listener{
+public class TestCMD implements CommandExecutor, Listener{
 	
 	
+	//Wichtig: Es müssen 4 Effekte Ausgelassen werden, sonst wird das Inventar zu groß und crasht!
+	static final PotionEffectType[] toIgnorePotionEffects = new PotionEffectType[] {PotionEffectType.LEVITATION, PotionEffectType.POISON, PotionEffectType.WITHER, PotionEffectType.BAD_OMEN};
 	
 	@EventHandler
 	public void onInventroyClick(InventoryClickEvent e) {
@@ -81,9 +83,35 @@ public class EffectGUI implements CommandExecutor, Listener{
 		return toReturn;
 	}
 	
+	
+	
+	public static boolean shouldIgnorePotionEffect(PotionEffectType pt) {
+		for(PotionEffectType cpt : toIgnorePotionEffects) {
+			if(cpt.getId()==pt.getId())
+				return true;
+		}
+		return false;
+	}
+	
 	static Inventory generateEveryEffectInventory(String team) {
 		
-		PotionEffectType[] potionEffectTypes = PotionEffectType.values();
+		
+		
+		
+		PotionEffectType[] potionEffectTypes = new PotionEffectType[PotionEffectType.values().length-toIgnorePotionEffects.length];
+		
+		int inIterator = 0;
+		for(int i = 0; i< PotionEffectType.values().length;i++) {
+			PotionEffectType cpe = PotionEffectType.values()[i];
+			if(!shouldIgnorePotionEffect(cpe)) {
+				potionEffectTypes[inIterator]=cpe;
+				inIterator++;
+			}
+				
+			
+		}
+		
+		
 		ArrayList<ItemStack> toInv = new ArrayList<>();
 		
 		boolean calc = true;
@@ -140,10 +168,11 @@ public class EffectGUI implements CommandExecutor, Listener{
 		}
 		
 		
-		Inventory toReturn = Bukkit.createInventory(null, 9*7, ChatColor.BLUE+"Teamefekte");
+		Inventory toReturn = Bukkit.createInventory(null, 9*6, ChatColor.BLUE+"Teamefekte");
 		
 		for(int i = 0; i<toInv.size();i++) {
-			toReturn.setItem(i, toInv.get(i));
+			if(i<54)
+				toReturn.setItem(i, toInv.get(i));
 		}
 		
 		return toReturn;
