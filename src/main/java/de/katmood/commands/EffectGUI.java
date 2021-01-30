@@ -1,4 +1,4 @@
-package main;
+package de.katmood.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,22 +32,15 @@ import org.bukkit.potion.PotionEffectType;
  */
 
 
-public class TestCMD implements CommandExecutor, Listener{
+public class EffectGUI implements CommandExecutor, Listener{
 	
-	
-	//Wichtig: Es müssen 4 Effekte Ausgelassen werden, sonst wird das Inventar zu groß und crasht!
-	static final PotionEffectType[] toIgnorePotionEffects = new PotionEffectType[] {PotionEffectType.LEVITATION, PotionEffectType.POISON, PotionEffectType.WITHER, PotionEffectType.BAD_OMEN};
-	
-	@EventHandler
-	public void onInventroyClick(InventoryClickEvent e) {
-		String invTitle = e.getView().getTitle();
-		
-		
-	}
 	
 	
 	public static final String TEAM_HUNTERS = "HUNTERS", TEAM_HUNTED = "HUNTED";
 	
+	
+	public static String TEAM_SELECTION_HUNTER_TEXT = ChatColor.RED+"Jäger";
+	public static String TEAM_SELECTION_HUNTED_TEXT = ChatColor.GREEN+"Gejagte";
 	
 	static HashMap<PotionEffectType, Integer> hunterEffects = new HashMap<>();
 	static HashMap<PotionEffectType, Integer> huntedEffects = new HashMap<>();
@@ -61,6 +54,33 @@ public class TestCMD implements CommandExecutor, Listener{
         return none;
 	}
 	
+	
+	//Wichtig: Es müssen 4 Effekte Ausgelassen werden, sonst wird das Inventar zu groß und crasht!
+	static final PotionEffectType[] toIgnorePotionEffects = new PotionEffectType[] {PotionEffectType.LEVITATION, PotionEffectType.POISON, PotionEffectType.WITHER, PotionEffectType.BAD_OMEN};
+	
+	@EventHandler
+	public void onInventroyClick(InventoryClickEvent e) {
+		String invTitle = e.getView().getTitle();
+		ItemStack clicked = e.getCurrentItem();
+		
+		if(invTitle.equalsIgnoreCase(ChatColor.BLUE+"Teamefekte")) {
+			
+			
+			
+		}
+		
+		if(invTitle.equalsIgnoreCase(ChatColor.BLUE+"Teamauswahl")) {
+			if(clicked.getItemMeta().getDisplayName().equalsIgnoreCase(TEAM_SELECTION_HUNTER_TEXT))
+				e.getWhoClicked().openInventory(generateEveryEffectInventory(TEAM_HUNTERS));
+			if(clicked.getItemMeta().getDisplayName().equalsIgnoreCase(TEAM_SELECTION_HUNTED_TEXT))
+				e.getWhoClicked().openInventory(generateEveryEffectInventory(TEAM_HUNTED));
+			
+		}
+		
+		
+	}
+	
+
 	static HashMap<PotionEffectType, Integer> getTeamEffectsByTeamID(String teamID) {
 		if(teamID.equalsIgnoreCase("HUNTERS"))
 			return hunterEffects;
@@ -75,10 +95,25 @@ public class TestCMD implements CommandExecutor, Listener{
 
 	
 	static Inventory selectTeamInventory() {
-		Inventory toReturn = Bukkit.createInventory(null, 2,  ChatColor.BLUE+"Teamauswahl");
+		Inventory toReturn = Bukkit.createInventory(null, 3*9,  ChatColor.BLUE+"Teamauswahl");
 		
 		
+		ItemStack huterButton = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+		ItemMeta hunterButtonMeta = huterButton.getItemMeta();
+		hunterButtonMeta.setDisplayName(TEAM_SELECTION_HUNTER_TEXT);
+		huterButton.setItemMeta(hunterButtonMeta);
 		
+		ItemStack hutedButton = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+		ItemMeta huntedButtonMeta = hutedButton.getItemMeta();
+		huntedButtonMeta.setDisplayName(TEAM_SELECTION_HUNTED_TEXT);
+		hutedButton.setItemMeta(huntedButtonMeta);
+		
+		
+		for(int i = 0; i<3*9;i++)
+			toReturn.setItem(i, noneItem());
+		
+		toReturn.setItem(13, huterButton);
+		toReturn.setItem(15, hutedButton);
 		
 		return toReturn;
 	}
@@ -184,7 +219,7 @@ public class TestCMD implements CommandExecutor, Listener{
 		
 		Player p = (Player)sender;
 		
-		p.openInventory(generateEveryEffectInventory(TEAM_HUNTED));
+		p.openInventory(selectTeamInventory());
 		
 		
 		return false;
