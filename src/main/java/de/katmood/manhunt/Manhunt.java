@@ -63,6 +63,8 @@ public class Manhunt extends JavaPlugin {
     public static String Timer = "TIMER";
     public static String Teamops = "TeamOptions";
     public static String AlivePath = "Alive";
+    public static String game = "GAME";
+    public static String Started = "Started";
     public static String shortInteger(int duration) {
         String string = "";
         int hours = 0;
@@ -105,19 +107,32 @@ public class Manhunt extends JavaPlugin {
     public static boolean ttp = true;
     public static boolean tinv = true;
     public static boolean tchat = true;
+    public static boolean started = false;
 
     public static int time;
 
-    public static void saveAlive(){
+    public static void saveStarted() {
+        plugin.getConfig().set(game+"."+Started, started);
+        plugin.saveConfig();
+    }
+
+    public static void loadStarted() {
+        started = plugin.getConfig().getBoolean(game+"."+Started);
+    }
+
+    public static void saveAlive() {
         for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
             if(Alive.containsKey(cp.getName()))
                 plugin.getConfig().set(pdata+"."+cp.getName()+"."+AlivePath, Alive.get(cp.getName()));
             else
                 plugin.getConfig().set(pdata+"."+cp.getName()+"."+AlivePath, true);
         }
+
+        plugin.saveConfig();
+
     }
 
-    public static void loadAlive(){
+    public static void loadAlive() {
 
         Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
 
@@ -134,7 +149,7 @@ public class Manhunt extends JavaPlugin {
         plugin.saveConfig();
     }
 
-    public static void loadTeamConfig(){
+    public static void loadTeamConfig() {
         ttp = plugin.getConfig().getBoolean(Teamops+".TeamTeleport");
         tinv = plugin.getConfig().getBoolean(Teamops+".TeamInventory");
         tchat = plugin.getConfig().getBoolean(Teamops+".TeamChat");
@@ -183,6 +198,7 @@ public class Manhunt extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin=this;
+        loadStarted();
         loadHunted();
         loadTimer();
         loadTeamConfig();
@@ -212,6 +228,7 @@ public class Manhunt extends JavaPlugin {
 
     @Override
     public void onDisable() {
+       saveStarted();
        saveHunted();
        saveTeamConfig();
        saveTimer();
