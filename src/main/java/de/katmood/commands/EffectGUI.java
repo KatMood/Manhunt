@@ -1,5 +1,6 @@
 package de.katmood.commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -81,28 +82,70 @@ public class EffectGUI implements CommandExecutor, Listener{
 	}
 	
 	static Inventory generateEveryEffectInventory(String team) {
-		Inventory toReturn = Bukkit.createInventory(null, 9*4, ChatColor.BLUE+"Teamefekte");
 		
-		int index = 0;
-		int currentEffectLevel = -1;
-		for(int i  = 0; i<PotionEffectType.values().length;i++) {
-			PotionEffectType cpt = PotionEffectType.values()[i];
-			if(getTeamEffectsByTeamID(team).containsKey(cpt)) 
-				currentEffectLevel = getTeamEffectsByTeamID(team).get(cpt);
-			ItemStack currentPotion = new ItemStack(Material.POTION, 1);
-			PotionMeta currentPotionMeta = (PotionMeta) currentPotion.getItemMeta();
-			currentPotionMeta.addCustomEffect(new PotionEffect(cpt, 1, 1), false);
-			currentPotionMeta.setColor(cpt.getColor());
-			if(currentEffectLevel == 0) {//lvl: 0 (Effekt aus)
-				currentPotionMeta.setDisplayName(ChatColor.RED+"(lvl:"+currentEffectLevel+")");
-			}else {		//lvl: >0 (Effekt an)
-				currentPotionMeta.setDisplayName(ChatColor.GREEN+"(lvl:"+currentEffectLevel+")");
-				currentPotionMeta.addEnchant(Enchantment.DURABILITY, 1, true);
-			}
-			currentPotion.setItemMeta(currentPotionMeta);
-			toReturn.setItem(index, currentPotion);
-			index++;
+		PotionEffectType[] potionEffectTypes = PotionEffectType.values();
+		ArrayList<ItemStack> toInv = new ArrayList<>();
+		
+		boolean calc = true;
+		int potIndex = 0;
+		int iteration = 0;
+		
+		
+		//Building Inventory with every potionType inside and walls form noneItem
+		while(calc) {
+			iteration++;
+			boolean pot = true;
+			
+			if(iteration <= 9)
+				pot = false;
+			if(iteration%9==0)
+				pot = false;
+			if(iteration%9==1)
+				pot = false;
+			
+			if(pot) {
+				if(potIndex < potionEffectTypes.length) {
+					PotionEffectType ci = potionEffectTypes[potIndex];
+					
+					PotionEffectType cpt = ci;
+					int currentEffectLevel = -1;
+					if(getTeamEffectsByTeamID(team).containsKey(cpt)) 
+						currentEffectLevel = getTeamEffectsByTeamID(team).get(cpt);
+					ItemStack currentPotion = new ItemStack(Material.POTION, 1);
+					PotionMeta currentPotionMeta = (PotionMeta) currentPotion.getItemMeta();
+					currentPotionMeta.addCustomEffect(new PotionEffect(cpt, 1, 1), false);
+					currentPotionMeta.setColor(cpt.getColor());
+					if(currentEffectLevel == 0) {//lvl: 0 (Effekt aus)
+						currentPotionMeta.setDisplayName(ChatColor.RED+"(lvl:"+currentEffectLevel+")");
+					}else {		//lvl: >0 (Effekt an)
+						currentPotionMeta.setDisplayName(ChatColor.GREEN+"(lvl:"+currentEffectLevel+")");
+						currentPotionMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+					}
+					currentPotion.setItemMeta(currentPotionMeta);
+					
+					toInv.add(currentPotion);
+					potIndex++;
+				}else {
+					while(!(iteration%9==2)) {
+						iteration++;
+						toInv.add(noneItem());
+					}
+					for(int i = 0; i<9;i++)
+						toInv.add(noneItem());
+					calc = false;
+					break;
+				}
+			}else
+				toInv.add(noneItem());
 		}
+		
+		
+		Inventory toReturn = Bukkit.createInventory(null, 9*7, ChatColor.BLUE+"Teamefekte");
+		
+		for(int i = 0; i<toInv.size();i++) {
+			toReturn.setItem(i, toInv.get(i));
+		}
+		
 		return toReturn;
 	}	
 	
