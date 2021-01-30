@@ -16,10 +16,27 @@ public class ModeratorCommand implements CommandExecutor {
             if (!(sender instanceof Player))
                 sender.sendMessage(Manhunt.noplayer);
 
-            if(!Manhunt.Moderators.get(p.getName()))
-                p.sendMessage(Manhunt.prefix+"§cDu bist leider kein Moderator und kannst darum keine Einstellungen ändern");
-            if(Manhunt.Moderators.get(p.getName()))
-                p.sendMessage(Manhunt.prefix+"§aDu bist ein Moderator und kannst darum sogar Einstellungen ändern.");
+            if(args.length == 0){
+
+                if(!Manhunt.Moderators.get(p.getName()))
+                    p.sendMessage(Manhunt.prefix+"§cDu bist leider kein Moderator und kannst darum keine Einstellungen ändern");
+                if(Manhunt.Moderators.get(p.getName()))
+                    p.sendMessage(Manhunt.prefix+"§aDu bist ein Moderator und kannst darum sogar Einstellungen ändern.");
+
+            }
+            if(args.length > 0) {
+
+                for( int i = 0; i < args.length ; i++) {
+                    if(Bukkit.getPlayer(args[i]) != null) {
+                        if(!Manhunt.Moderators.get(args[i]))
+                            p.sendMessage(Manhunt.prefix+"§7 "+args[i]+" §cist kein Moderator");
+                        if(Manhunt.Moderators.get(args[i]))
+                            p.sendMessage(Manhunt.prefix+"§7 "+args[i]+" §aist ein Moderator");
+                    }
+                }
+
+            }
+
         }
 
         if (command.getName().equalsIgnoreCase("moderatorchange")) {
