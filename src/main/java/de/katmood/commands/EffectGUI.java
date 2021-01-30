@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -31,7 +32,7 @@ import org.bukkit.potion.PotionEffectType;
 
 
 public class EffectGUI implements CommandExecutor, Listener{
-
+	
 	
 	
 	@EventHandler
@@ -47,6 +48,15 @@ public class EffectGUI implements CommandExecutor, Listener{
 	
 	static HashMap<PotionEffectType, Integer> hunterEffects = new HashMap<>();
 	static HashMap<PotionEffectType, Integer> huntedEffects = new HashMap<>();
+	
+	
+	static ItemStack noneItem() {
+		ItemStack none = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+		ItemMeta none_meta = none.getItemMeta();
+        none_meta.setDisplayName(" ");
+        none.setItemMeta(none_meta);
+        return none;
+	}
 	
 	static HashMap<PotionEffectType, Integer> getTeamEffectsByTeamID(String teamID) {
 		if(teamID.equalsIgnoreCase("HUNTERS"))
@@ -71,26 +81,29 @@ public class EffectGUI implements CommandExecutor, Listener{
 	}
 	
 	static Inventory generateEveryEffectInventory(String team) {
-		Inventory toReturn = Bukkit.createInventory(null, 9*4, ChatColor.BLUE+"Effektte für das Team "+team+" zuweisen!");
+		
+		
+		Inventory toReturn = Bukkit.createInventory(null, 9*4, ChatColor.BLUE+"Teamefekte");
 		
 		int index = 0;
 		int currentEffectLevel = -1;
-		for(PotionEffectType cpt : PotionEffectType.values()) {
+		for(int i  = 0; i<PotionEffectType.values().length;i++) {
+			PotionEffectType cpt = PotionEffectType.values()[i];
 			if(getTeamEffectsByTeamID(team).containsKey(cpt)) 
 				currentEffectLevel = getTeamEffectsByTeamID(team).get(cpt);
-			index++;
 			ItemStack currentPotion = new ItemStack(Material.POTION, 1);
 			PotionMeta currentPotionMeta = (PotionMeta) currentPotion.getItemMeta();
 			currentPotionMeta.addCustomEffect(new PotionEffect(cpt, 1, 1), false);
 			currentPotionMeta.setColor(cpt.getColor());
 			if(currentEffectLevel == 0) {//lvl: 0 (Effekt aus)
-				currentPotionMeta.setDisplayName(ChatColor.RED+""+cpt.getName()+" Effect!");
+				currentPotionMeta.setDisplayName(ChatColor.RED+"(lvl:"+currentEffectLevel+")");
 			}else {		//lvl: >0 (Effekt an)
-				currentPotionMeta.setDisplayName(ChatColor.GREEN+""+cpt.getName()+" Effect!");
+				currentPotionMeta.setDisplayName(ChatColor.GREEN+"(lvl:"+currentEffectLevel+")");
 				currentPotionMeta.addEnchant(Enchantment.DURABILITY, 1, true);
 			}
 			currentPotion.setItemMeta(currentPotionMeta);
 			toReturn.setItem(index, currentPotion);
+			index++;
 		}
 		return toReturn;
 	}	
