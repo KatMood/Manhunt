@@ -25,13 +25,12 @@ public class ModeratorCommand implements CommandExecutor {
 
             }
             if(args.length > 0) {
-
-                for( int i = 0; i < args.length ; i++) {
+                for(int i = 0; i < args.length ; i++) {
                     if(Bukkit.getPlayer(args[i]) != null) {
                         if(!Manhunt.Moderators.get(args[i]))
-                            p.sendMessage(Manhunt.prefix+"§7 "+args[i]+" §cist kein Moderator");
+                            p.sendMessage(Manhunt.prefix+"§7"+args[i]+" §cist kein Moderator");
                         if(Manhunt.Moderators.get(args[i]))
-                            p.sendMessage(Manhunt.prefix+"§7 "+args[i]+" §aist ein Moderator");
+                            p.sendMessage(Manhunt.prefix+"§7"+args[i]+" §aist ein Moderator");
                     }
                 }
 
