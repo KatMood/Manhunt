@@ -46,6 +46,22 @@ public class EffectGUI implements CommandExecutor, Listener{
 	static HashMap<PotionEffectType, Integer> huntedEffects = new HashMap<>();
 	
 	
+	static int TeamIDToInt(String teamID) {
+		if(teamID.equalsIgnoreCase(TEAM_HUNTERS))
+			return 0;
+		else if(teamID.equalsIgnoreCase(TEAM_HUNTED))
+			return 1;
+		return -1;
+	}
+	
+	static String IntToTeamID(int value) {
+		if(value==0)
+			return TEAM_HUNTERS;
+		else if(value==1)
+			return TEAM_HUNTED;
+		return "ERROR!";
+	}
+	
 	static ItemStack noneItem() {
 		ItemStack none = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
 		ItemMeta none_meta = none.getItemMeta();
@@ -63,17 +79,23 @@ public class EffectGUI implements CommandExecutor, Listener{
 		String invTitle = e.getView().getTitle();
 		ItemStack clicked = e.getCurrentItem();
 		
-		if(invTitle.equalsIgnoreCase(ChatColor.BLUE+"Teamefekte")) {
-			
-			
+		if(invTitle.startsWith(ChatColor.GOLD+"Levelauswahl")) {
+			e.setCancelled(true);
 			
 		}
 		
+		if(invTitle.startsWith(ChatColor.BLUE+"Teamefekte")) {
+			e.setCancelled(true);
+			PotionMeta currentMeta = (PotionMeta)clicked.getItemMeta();
+			e.getWhoClicked().openInventory(selectLevelInventory(currentMeta.getCustomEffects().get(0).getType(), IntToTeamID(Integer.valueOf(invTitle.replace(ChatColor.BLUE+"Teamefekte_", "")))));	//Assuming the clicked Potion has only one Custom Effect
+		}
+		
 		if(invTitle.equalsIgnoreCase(ChatColor.BLUE+"Teamauswahl")) {
+			e.setCancelled(true);
 			if(clicked.getItemMeta().getDisplayName().equalsIgnoreCase(TEAM_SELECTION_HUNTER_TEXT))
-				e.getWhoClicked().openInventory(generateEveryEffectInventory(TEAM_HUNTERS));
+				e.getWhoClicked().openInventory(selectEffectInventory(TEAM_HUNTERS));
 			if(clicked.getItemMeta().getDisplayName().equalsIgnoreCase(TEAM_SELECTION_HUNTED_TEXT))
-				e.getWhoClicked().openInventory(generateEveryEffectInventory(TEAM_HUNTED));
+				e.getWhoClicked().openInventory(selectEffectInventory(TEAM_HUNTED));
 			
 		}
 		
@@ -92,7 +114,20 @@ public class EffectGUI implements CommandExecutor, Listener{
 		return huntedEffects;
 	}
 	
-
+	static Inventory selectLevelInventory(PotionEffectType potionType, String teamID) {
+		Inventory toReturn = Bukkit.createInventory(null, 3*9,  ChatColor.GOLD+"Levelauswahl");
+		
+		for(int i = 0; i<3*9;i++)
+			toReturn.setItem(i, noneItem());
+		
+		Bukkit.broadcastMessage("Warning: Open Endpoint...");
+		Bukkit.broadcastMessage("TeamID: \""+teamID+"\"");
+		Bukkit.broadcastMessage("PotionType: \""+potionType.getName()+"\"");
+		
+		return toReturn;
+	}
+	
+	
 	
 	static Inventory selectTeamInventory() {
 		Inventory toReturn = Bukkit.createInventory(null, 3*9,  ChatColor.BLUE+"Teamauswahl");
@@ -112,8 +147,8 @@ public class EffectGUI implements CommandExecutor, Listener{
 		for(int i = 0; i<3*9;i++)
 			toReturn.setItem(i, noneItem());
 		
-		toReturn.setItem(13, huterButton);
-		toReturn.setItem(15, hutedButton);
+		toReturn.setItem(12, huterButton);
+		toReturn.setItem(14, hutedButton);
 		
 		return toReturn;
 	}
@@ -128,7 +163,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 		return false;
 	}
 	
-	static Inventory generateEveryEffectInventory(String team) {
+	static Inventory selectEffectInventory(String team) {
 		
 		
 		
@@ -203,7 +238,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 		}
 		
 		
-		Inventory toReturn = Bukkit.createInventory(null, 9*6, ChatColor.BLUE+"Teamefekte");
+		Inventory toReturn = Bukkit.createInventory(null, 9*6, ChatColor.BLUE+"Teamefekte_"+TeamIDToInt(team));
 		
 		for(int i = 0; i<toInv.size();i++) {
 			if(i<54)
