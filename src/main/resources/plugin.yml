@@ -49,3 +49,11 @@ commands:
       - teaminv
       - tinv
       - inv
+
+  moderator:
+    aliases:
+      - mod
+
+  moderatorchange:
+    aliases:
+      - modchange

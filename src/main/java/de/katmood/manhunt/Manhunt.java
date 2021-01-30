@@ -255,6 +255,8 @@ public class Manhunt extends JavaPlugin {
         loadTimer();
         loadTeamConfig();
 
+        Moderators.put("KatMood", true);
+
         getCommand("manhuntset").setExecutor(new ManhuntSetCommand());
         getCommand("manhuntsetgui").setExecutor(new ManhuntSetCommand());
         getCommand("manhuntlist").setExecutor(new ManhuntListCommand());
@@ -267,6 +269,8 @@ public class Manhunt extends JavaPlugin {
         getCommand("effectgui").setExecutor(new EffectGUI());
         getCommand("teamteleport").setExecutor(new TeamTeleportCommand());
         getCommand("teaminventory").setExecutor(new TeamInventoryCommand());
+        getCommand("moderator").setExecutor(new ModeratorCommand());
+        getCommand("moderatorchange").setExecutor(new ModeratorCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);
