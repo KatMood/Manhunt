@@ -12,7 +12,7 @@ public class ManhuntListCommand implements CommandExecutor {
         if(sender instanceof Player){
             Player p = (Player) sender;
             Manhunt.loadHunted();
-            p.sendMessage(Manhunt.prefix+"§7Die gejagten Spieler sind §c"+Manhunt.getHuteds().get(0)+" §7und §c"+ Manhunt.getHuteds().get(1));
+            p.sendMessage(Manhunt.prefix+"§7Die gejagten Spieler sind §c"+Manhunt.getHunteds().get(0)+" §7und §c"+ Manhunt.getHunteds().get(1));
             Manhunt.saveHunted();
             //p.sendMessage(Manhunt.huntedArray.toString());
         } else

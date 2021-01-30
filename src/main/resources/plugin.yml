@@ -43,3 +43,17 @@ commands:
     aliases:
       - teamtp
       - ttp
+
+  teaminventory:
+    aliases:
+      - teaminv
+      - tinv
+      - inv
+
+  moderator:
+    aliases:
+      - mod
+
+  moderatorchange:
+    aliases:
+      - modchange

@@ -12,11 +12,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Timer {
 
-    public static int SchedulerID;
+    public static int SchedulerID = -100;
 
     String message = "§6§lJust a simple test message!";
 
-    public void start(Player player) {
+    public void start() {
         SchedulerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Manhunt.plugin, new Runnable() {
             @Override
             public void run() {
@@ -53,7 +53,10 @@ public class Timer {
     }
 
     public void resume() {
-        Manhunt.timerpaused = false;
+        if(SchedulerID == -100){
+            start();
+        } else
+            Manhunt.timerpaused = false;
     }
 
     private void sendActionbar(Player player, String message){

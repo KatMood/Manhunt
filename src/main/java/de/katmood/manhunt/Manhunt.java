@@ -5,6 +5,7 @@ import de.katmood.events.PlayerChatEvent;
 import de.katmood.timer.Timer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,17 +18,44 @@ public class Manhunt extends JavaPlugin {
     public static JavaPlugin plugin;
 
     public static HashMap<String, Boolean> Hunted = new HashMap<>();
+    public static HashMap<String, Boolean> Alive = new HashMap<>();
+    public static HashMap<String, Boolean> NeedWorldUpdate = new HashMap<>();
+    public static HashMap<String, Boolean> Moderators = new HashMap<>();
 
-    public static ArrayList<String> getHuteds() {
-        ArrayList<String> huteds = new ArrayList<>();
+    public static ArrayList<String> getHunteds() {
+        ArrayList<String> hunteds = new ArrayList<>();
         for(String ck : Hunted.keySet()) {
             if(Hunted.get(ck))
-                huteds.add(ck);
+                hunteds.add(ck);
         }
-        return huteds;
+        return hunteds;
+    }
+
+    public static ArrayList<String> getHunters() {
+        ArrayList<String> hunters = new ArrayList<>();
+        for(String ck : Hunted.keySet()) {
+            if(!Hunted.get(ck))
+                hunters.add(ck);
+        }
+        return hunters;
+    }
+
+    public static ArrayList<String> getOnlineHunters() {
+        ArrayList<String> hunters = new ArrayList<>();
+        for(String ck : Hunted.keySet()) {
+            if(!Hunted.get(ck)) {
+                if(Bukkit.getPlayer(ck) != null)
+                    hunters.add(ck);
+            }
+
+        }
+        return hunters;
     }
 
     public static Timer timer = new Timer();
+
+    public static Inventory huntedinv = Bukkit.createInventory(null, 9*3, "§a§lTeam Inventar");
+    public static Inventory hunterinv = Bukkit.createInventory(null, 9*3, "§a§lTeam Inventar");
 
     public static String prefix = "§7[§bKat§7] ";
     public static String lprefix = "§7§l[[§b§lKat§7§l] ";
@@ -36,6 +64,11 @@ public class Manhunt extends JavaPlugin {
     public static String pdata = "PLAYERDATA";
     public static String Timer = "TIMER";
     public static String Teamops = "TeamOptions";
+    public static String AlivePath = "Alive";
+    public static String game = "GAME";
+    public static String Started = "Started";
+    public static String NWUPath = "NeedWorldUpdate";
+    public static String ModPath = "Moderator";
     public static String shortInteger(int duration) {
         String string = "";
         int hours = 0;
@@ -78,8 +111,85 @@ public class Manhunt extends JavaPlugin {
     public static boolean ttp = true;
     public static boolean tinv = true;
     public static boolean tchat = true;
+    public static boolean started = false;
 
     public static int time;
+
+    public static void saveModerators() {
+
+        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()) {
+            if(Moderators.containsKey(cp.getName()))
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+ModPath, Moderators.get(cp.getName()));
+            else
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+ModPath, false);
+        }
+
+        plugin.saveConfig();
+    }
+
+    public static void loadModerators() {
+
+        Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
+
+        for(String cc : childs) {
+            Boolean mod = plugin.getConfig().getBoolean(pdata+"."+cc+"."+ModPath);
+            Moderators.put(cc, mod);
+        }
+
+    }
+
+    public static void saveNeedWorldUpdate() {
+        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
+            if(NeedWorldUpdate.containsKey(cp.getName()))
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+NWUPath, NeedWorldUpdate.get(cp.getName()));
+            else
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+NWUPath, true);
+        }
+
+        plugin.saveConfig();
+    }
+
+    public static void loadNeedWorldUpdate() {
+
+        Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
+
+        for(String cc : childs) {
+            Boolean nwu = plugin.getConfig().getBoolean(pdata+"."+cc+"."+NWUPath);
+            NeedWorldUpdate.put(cc, nwu);
+        }
+
+    }
+
+    public static void saveStarted() {
+        plugin.getConfig().set(game+"."+Started, started);
+        plugin.saveConfig();
+    }
+
+    public static void loadStarted() {
+        started = plugin.getConfig().getBoolean(game+"."+Started);
+    }
+
+    public static void saveAlive() {
+        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
+            if(Alive.containsKey(cp.getName()))
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+AlivePath, Alive.get(cp.getName()));
+            else
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+AlivePath, true);
+        }
+
+        plugin.saveConfig();
+
+    }
+
+    public static void loadAlive() {
+
+        Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
+
+        for(String cc : childs) {
+            Boolean alive = plugin.getConfig().getBoolean(pdata+"."+cc+"."+AlivePath);
+            Alive.put(cc, alive);
+        }
+    }
 
     public static void saveTeamConfig(){
         plugin.getConfig().set(Teamops+".TeamTeleport", ttp);
@@ -88,7 +198,7 @@ public class Manhunt extends JavaPlugin {
         plugin.saveConfig();
     }
 
-    public static void loadTeamConfig(){
+    public static void loadTeamConfig() {
         ttp = plugin.getConfig().getBoolean(Teamops+".TeamTeleport");
         tinv = plugin.getConfig().getBoolean(Teamops+".TeamInventory");
         tchat = plugin.getConfig().getBoolean(Teamops+".TeamChat");
@@ -137,9 +247,15 @@ public class Manhunt extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin=this;
+        loadStarted();
+        loadModerators();
         loadHunted();
+        loadAlive();
+        loadNeedWorldUpdate();
         loadTimer();
         loadTeamConfig();
+
+        Moderators.put("KatMood", true);
 
         getCommand("manhuntset").setExecutor(new ManhuntSetCommand());
         getCommand("manhuntsetgui").setExecutor(new ManhuntSetCommand());
@@ -152,6 +268,9 @@ public class Manhunt extends JavaPlugin {
         getCommand("teamoptionsgui").setExecutor(new TeamOptionsGUI());
         getCommand("effectgui").setExecutor(new EffectGUI());
         getCommand("teamteleport").setExecutor(new TeamTeleportCommand());
+        getCommand("teaminventory").setExecutor(new TeamInventoryCommand());
+        getCommand("moderator").setExecutor(new ModeratorCommand());
+        getCommand("moderatorchange").setExecutor(new ModeratorCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);
@@ -164,7 +283,11 @@ public class Manhunt extends JavaPlugin {
 
     @Override
     public void onDisable() {
+       saveStarted();
+       saveModerators();
        saveHunted();
+       saveAlive();
+       saveNeedWorldUpdate();
        saveTeamConfig();
        saveTimer();
     }
