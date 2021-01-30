@@ -19,6 +19,7 @@ public class Manhunt extends JavaPlugin {
 
     public static HashMap<String, Boolean> Hunted = new HashMap<>();
     public static HashMap<String, Boolean> Alive = new HashMap<>();
+    public static HashMap<String, Boolean> NeedWorldUpdate = new HashMap<>();
 
     public static ArrayList<String> getHunteds() {
         ArrayList<String> hunteds = new ArrayList<>();
@@ -65,6 +66,7 @@ public class Manhunt extends JavaPlugin {
     public static String AlivePath = "Alive";
     public static String game = "GAME";
     public static String Started = "Started";
+    public static String NWUPath = "NeedWorldUpdate";
     public static String shortInteger(int duration) {
         String string = "";
         int hours = 0;
@@ -110,6 +112,26 @@ public class Manhunt extends JavaPlugin {
     public static boolean started = false;
 
     public static int time;
+
+    public static void saveNeedWorldUpdate() {
+        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
+            if(NeedWorldUpdate.containsKey(cp.getName()))
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+NWUPath, NeedWorldUpdate.get(cp.getName()));
+            else
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+NWUPath, true);
+        }
+    }
+
+    public static void loadNeedWorldUpdate() {
+
+        Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
+
+        for(String cc : childs) {
+            Boolean nwu = plugin.getConfig().getBoolean(pdata+"."+cc+"."+NWUPath);
+            NeedWorldUpdate.put(cc, nwu);
+        }
+
+    }
 
     public static void saveStarted() {
         plugin.getConfig().set(game+"."+Started, started);
@@ -200,9 +222,10 @@ public class Manhunt extends JavaPlugin {
         plugin=this;
         loadStarted();
         loadHunted();
+        loadAlive();
+        loadNeedWorldUpdate();
         loadTimer();
         loadTeamConfig();
-        loadAlive();
 
         getCommand("manhuntset").setExecutor(new ManhuntSetCommand());
         getCommand("manhuntsetgui").setExecutor(new ManhuntSetCommand());
@@ -230,8 +253,9 @@ public class Manhunt extends JavaPlugin {
     public void onDisable() {
        saveStarted();
        saveHunted();
+       saveAlive();
+       saveNeedWorldUpdate();
        saveTeamConfig();
        saveTimer();
-       saveAlive();
     }
 }
