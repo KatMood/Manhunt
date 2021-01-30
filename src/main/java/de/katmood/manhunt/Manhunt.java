@@ -20,6 +20,7 @@ public class Manhunt extends JavaPlugin {
     public static HashMap<String, Boolean> Hunted = new HashMap<>();
     public static HashMap<String, Boolean> Alive = new HashMap<>();
     public static HashMap<String, Boolean> NeedWorldUpdate = new HashMap<>();
+    public static HashMap<String, Boolean> Moderators = new HashMap<>();
 
     public static ArrayList<String> getHunteds() {
         ArrayList<String> hunteds = new ArrayList<>();
@@ -67,6 +68,7 @@ public class Manhunt extends JavaPlugin {
     public static String game = "GAME";
     public static String Started = "Started";
     public static String NWUPath = "NeedWorldUpdate";
+    public static String ModPath = "Moderator";
     public static String shortInteger(int duration) {
         String string = "";
         int hours = 0;
@@ -113,6 +115,29 @@ public class Manhunt extends JavaPlugin {
 
     public static int time;
 
+    public static void saveModerators() {
+
+        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()) {
+            if(Moderators.containsKey(cp.getName()))
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+ModPath, Moderators.get(cp.getName()));
+            else
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+ModPath, false);
+        }
+
+        plugin.saveConfig();
+    }
+
+    public static void loadModerators() {
+
+        Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
+
+        for(String cc : childs) {
+            Boolean mod = plugin.getConfig().getBoolean(pdata+"."+cc+"."+ModPath);
+            Moderators.put(cc, mod);
+        }
+
+    }
+
     public static void saveNeedWorldUpdate() {
         for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
             if(NeedWorldUpdate.containsKey(cp.getName()))
@@ -120,6 +145,8 @@ public class Manhunt extends JavaPlugin {
             else
                 plugin.getConfig().set(pdata+"."+cp.getName()+"."+NWUPath, true);
         }
+
+        plugin.saveConfig();
     }
 
     public static void loadNeedWorldUpdate() {
@@ -221,6 +248,7 @@ public class Manhunt extends JavaPlugin {
     public void onEnable() {
         plugin=this;
         loadStarted();
+        loadModerators();
         loadHunted();
         loadAlive();
         loadNeedWorldUpdate();
@@ -252,6 +280,7 @@ public class Manhunt extends JavaPlugin {
     @Override
     public void onDisable() {
        saveStarted();
+       saveModerators();
        saveHunted();
        saveAlive();
        saveNeedWorldUpdate();
