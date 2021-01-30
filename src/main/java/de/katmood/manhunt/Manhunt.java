@@ -18,6 +18,7 @@ public class Manhunt extends JavaPlugin {
     public static JavaPlugin plugin;
 
     public static HashMap<String, Boolean> Hunted = new HashMap<>();
+    public static HashMap<String, Boolean> Alive = new HashMap<>();
 
     public static ArrayList<String> getHunteds() {
         ArrayList<String> hunteds = new ArrayList<>();
@@ -61,6 +62,7 @@ public class Manhunt extends JavaPlugin {
     public static String pdata = "PLAYERDATA";
     public static String Timer = "TIMER";
     public static String Teamops = "TeamOptions";
+    public static String AlivePath = "Alive";
     public static String shortInteger(int duration) {
         String string = "";
         int hours = 0;
@@ -105,6 +107,25 @@ public class Manhunt extends JavaPlugin {
     public static boolean tchat = true;
 
     public static int time;
+
+    public static void saveAlive(){
+        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
+            if(Alive.containsKey(cp.getName()))
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+AlivePath, Alive.get(cp.getName()));
+            else
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+AlivePath, true);
+        }
+    }
+
+    public static void loadAlive(){
+
+        Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
+
+        for(String cc : childs) {
+            Boolean alive = plugin.getConfig().getBoolean(pdata+"."+cc+"."+AlivePath);
+            Alive.put(cc, alive);
+        }
+    }
 
     public static void saveTeamConfig(){
         plugin.getConfig().set(Teamops+".TeamTeleport", ttp);
@@ -165,6 +186,7 @@ public class Manhunt extends JavaPlugin {
         loadHunted();
         loadTimer();
         loadTeamConfig();
+        loadAlive();
 
         getCommand("manhuntset").setExecutor(new ManhuntSetCommand());
         getCommand("manhuntsetgui").setExecutor(new ManhuntSetCommand());
@@ -193,5 +215,6 @@ public class Manhunt extends JavaPlugin {
        saveHunted();
        saveTeamConfig();
        saveTimer();
+       saveAlive();
     }
 }
