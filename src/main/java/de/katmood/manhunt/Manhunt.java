@@ -280,6 +280,7 @@ public class Manhunt extends JavaPlugin {
         pm.registerEvents(new ManhuntSetCommand(), this);
         pm.registerEvents(new TeamOptionsGUI(), this);
         pm.registerEvents(new EffectGUI(), this);
+        pm.registerEvents(new GameOptionsGUI(), this);
 
     }
 

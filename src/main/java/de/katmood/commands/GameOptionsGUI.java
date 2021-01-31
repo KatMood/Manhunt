@@ -7,13 +7,33 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import sun.jvm.hotspot.ui.ObjectHistogramPanel;
 
 import java.util.ArrayList;
 
-public class GameOptionsGUI implements CommandExecutor {
+public class GameOptionsGUI implements Listener, CommandExecutor {
+
+    @EventHandler
+    public void onClick(InventoryClickEvent e) {
+        Player p = (Player) e.getWhoClicked();
+        String invname = e.getView().getTitle();
+        String itemname = e.getCurrentItem().getItemMeta().getDisplayName();
+
+        if(invname.equalsIgnoreCase("§a§lGame Options")) {
+            e.setCancelled(true);
+            if(e.getCurrentItem().hasItemMeta()) {
+                if(itemname.equalsIgnoreCase("§b§lFreeze")) {
+                    p.sendMessage("Freeze");
+                }
+            }
+        }
+    }
 
     static void renderMain(Inventory inv) {
 
