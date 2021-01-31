@@ -43,6 +43,10 @@ public class MenuCommand implements Listener, CommandExecutor {
                     p.closeInventory();
                     p.performCommand("teamoptionsgui");
                 }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§2§lSpieleinstellungen")) {
+                    p.closeInventory();
+                    p.performCommand("gameoptionsgui");
+                }
             }
         }
     }
@@ -61,6 +65,7 @@ public class MenuCommand implements Listener, CommandExecutor {
             ItemStack team = new ItemStack(Material.HEART_OF_THE_SEA);
             ItemStack effects = new ItemStack(Material.POTION);
             ItemStack info = new ItemStack(Material.PAPER);
+            ItemStack gameops = new ItemStack(Material.COMPARATOR);
 
             ItemMeta none_meta = none.getItemMeta();
             none_meta.setDisplayName(" ");
@@ -117,6 +122,14 @@ public class MenuCommand implements Listener, CommandExecutor {
             info_meta.setLore(info_lore);
             info.setItemMeta(info_meta);
 
+            ItemMeta gameops_meta = gameops.getItemMeta();
+            gameops_meta.setDisplayName("§2§lSpieleinstellungen");
+            ArrayList<String> gameops_lore = new ArrayList<>();
+            gameops_lore.add("§eKlicke um die Spieleinstellungen");
+            gameops_lore.add("§ezu öffnen.");
+            gameops_meta.setLore(gameops_lore);
+            gameops.setItemMeta(gameops_meta);
+
             menu.setItem(0, none);
             menu.setItem(1, none);
             menu.setItem(2, none);
@@ -140,7 +153,7 @@ public class MenuCommand implements Listener, CommandExecutor {
             menu.setItem(20, non);
             menu.setItem(21, non);
             menu.setItem(22, non);
-            menu.setItem(23, non);
+            menu.setItem(23, gameops);
             menu.setItem(24, non);
             menu.setItem(25, non);
             menu.setItem(26, none);
