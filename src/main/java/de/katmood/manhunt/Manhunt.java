@@ -1,6 +1,7 @@
 package de.katmood.manhunt;
 
 import de.katmood.commands.*;
+import de.katmood.events.PlayerBreak;
 import de.katmood.events.PlayerChatEvent;
 import de.katmood.events.PlayerMove;
 import de.katmood.timer.Timer;
@@ -276,6 +277,7 @@ public class Manhunt extends JavaPlugin {
         pm.registerEvents(new EffectGUI(), this);
         pm.registerEvents(new GameOptionsGUI(), this);
         pm.registerEvents(new PlayerMove(), this);
+        pm.registerEvents(new PlayerBreak(), this);
 
         
         EffectGUI.loadEffectLevelsFromConfig();
