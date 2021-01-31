@@ -265,6 +265,7 @@ public class Manhunt extends JavaPlugin {
         getCommand("gameoptionsgui").setExecutor(new GameOptionsGUI());
         getCommand("freezegui").setExecutor(new GameOptionsGUI());
         getCommand("freeze").setExecutor(new FreezeCommand());
+        getCommand("start").setExecutor(new startCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);
