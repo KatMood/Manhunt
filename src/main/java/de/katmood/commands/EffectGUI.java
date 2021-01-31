@@ -84,12 +84,14 @@ public class EffectGUI implements CommandExecutor, Listener{
 			String teamID = IntToTeamID(Integer.valueOf(invTitle.replace(ChatColor.GOLD+"Levelauswahl_", "")));
 			
 			if(clicked.equals(plusButton())) {
-				e.getWhoClicked().sendMessage("plus... [teamID: "+teamID+" | type: "+currentType.getName()+"]");
-				setEffectLevel(teamID, currentType, getPotionLevelByTeam(currentType, teamID)+1);
+				//e.getWhoClicked().sendMessage("plus... [teamID: "+teamID+" | type: "+currentType.getName()+"]");
+				if(getPotionLevelByTeam(currentType, teamID)<maxLevel)
+					setEffectLevel(teamID, currentType, getPotionLevelByTeam(currentType, teamID)+1);
 			}
 			if(clicked.equals(minusButton())) {
-				e.getWhoClicked().sendMessage("minus... [teamID: "+teamID+" | type: "+currentType.getName()+"]");
-				setEffectLevel(teamID, currentType, getPotionLevelByTeam(currentType, teamID)-1);
+				//e.getWhoClicked().sendMessage("minus... [teamID: "+teamID+" | type: "+currentType.getName()+"]");
+				if(getPotionLevelByTeam(currentType, teamID)>0)
+					setEffectLevel(teamID, currentType, getPotionLevelByTeam(currentType, teamID)-1);
 			}
 			drawLevelSelectInventory(e.getInventory(), currentType, teamID);
 		}
@@ -119,6 +121,8 @@ public class EffectGUI implements CommandExecutor, Listener{
 	
 	public static String TEAM_SELECTION_HUNTER_TEXT = ChatColor.RED+"Jäger";
 	public static String TEAM_SELECTION_HUNTED_TEXT = ChatColor.GREEN+"Gejagte";
+	
+	public static final int maxLevel = 64;
 	
 	//Wichtig: Es m�ssen 4 Effekte Ausgelassen werden, sonst wird das Inventar zu gro� und crasht!
 	static final PotionEffectType[] toIgnorePotionEffects = new PotionEffectType[] {PotionEffectType.LEVITATION, PotionEffectType.POISON, PotionEffectType.WITHER, PotionEffectType.BAD_OMEN};
