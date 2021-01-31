@@ -21,6 +21,11 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import de.katmood.manhunt.Manhunt;
+
+
+
+
 /*
  * Infos:
  * -Es gibt 1 - 32 (32.) Effects
@@ -35,12 +40,43 @@ import org.bukkit.potion.PotionEffectType;
 public class EffectGUI implements CommandExecutor, Listener{
 	
 	
+	public static String effectListPath = "EFFECT_LIST";
+	static void saveEffectLevelsInConfig() {
+		fillPotionEffectLists();
+		for(PotionEffectType cpt : huntedEffects.keySet()) {
+			if(cpt != null) {
+				Manhunt.plugin.getConfig().set(effectListPath+"."+TEAM_HUNTED+"."+cpt.getName(), huntedEffects.get(cpt));
+			}
+		}
+		for(PotionEffectType cpt : hunterEffects.keySet()) {
+			if(cpt != null)
+				Manhunt.plugin.getConfig().set(effectListPath+"."+TEAM_HUNTERS+"."+cpt.getName(), hunterEffects.get(cpt));
+		}
+		Manhunt.plugin.saveConfig();
+	}
+	
+	static void loadEffectLevelsFromConfig() {
+		fillPotionEffectLists();
+		if(Manhunt.plugin.getConfig().isSet(effectListPath)) {
+			for(String c : Manhunt.plugin.getConfig().getConfigurationSection(effectListPath+"."+TEAM_HUNTED).getKeys(false)) {
+				huntedEffects.put(PotionEffectType.getByName(c), Manhunt.plugin.getConfig().getInt(effectListPath+"."+TEAM_HUNTED+"."+c));
+			}
+			for(String c : Manhunt.plugin.getConfig().getConfigurationSection(effectListPath+"."+TEAM_HUNTERS).getKeys(false)) {
+				hunterEffects.put(PotionEffectType.getByName(c), Manhunt.plugin.getConfig().getInt(effectListPath+"."+TEAM_HUNTERS+"."+c));
+			}
+		}else {
+			System.out.println("Warning: Could not laod EffectList Settings, because it was not set in the config.yml!");
+		}
+			
+	}
+	
+	
 	
 	@EventHandler
 	public void onInventroyClick(InventoryClickEvent e) {
 		String invTitle = e.getView().getTitle();
 		ItemStack clicked = e.getCurrentItem();
-		
+		if(clicked!=null) {
 		if(invTitle.startsWith(ChatColor.GOLD+"Levelauswahl")) {
 			e.setCancelled(true);
 			PotionMeta pm = (PotionMeta) e.getInventory().getItem(11).getItemMeta();
@@ -73,7 +109,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 			
 		}
 		
-		
+		}
 	}
 	
 	
@@ -330,7 +366,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 		
 		Player p = (Player)sender;
 		
-		fillPotionEffectLists();
+		
 		//setEffectLevel(IntToTeamID(new Random().nextInt(2)), allNotToIgnorePotionEffects()[new Random().nextInt(allNotToIgnorePotionEffects().length-1)], new Random().nextInt(50));
 		
 		p.openInventory(selectTeamInventory());
