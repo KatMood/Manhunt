@@ -74,6 +74,7 @@ public class Manhunt extends JavaPlugin {
     public static String ModPath = "Moderator";
     public static String GameOpsPath = "Options";
     public static String FreezePath = "Freeze";
+    public static String FreezeTimePath = "FreezeTime";
     public static String shortInteger(int duration) {
         String string = "";
         int hours = 0;
@@ -117,19 +118,22 @@ public class Manhunt extends JavaPlugin {
     public static boolean tinv = true;
     public static boolean tchat = true;
     public static boolean started = false;
-    public static boolean freeze = true;
+    public static boolean freeze = false;
 
     public static int time;
+    public static int freezeTime = 0;
 
     public static void saveGameData() {
         plugin.getConfig().set(game+"."+Started, started);
         plugin.getConfig().set(game+"."+GameOpsPath+"."+FreezePath, freeze);
+        plugin.getConfig().set(game+"."+GameOpsPath+"."+FreezeTimePath, freezeTime);
         plugin.saveConfig();
     }
 
     public static void loadGameData() {
         started = plugin.getConfig().getBoolean(game+"."+Started);
         freeze = plugin.getConfig().getBoolean(game+"."+GameOpsPath+"."+FreezePath);
+        freezeTime = plugin.getConfig().getInt(game+"."+GameOpsPath+"."+FreezeTimePath);
     }
 
     public static void saveTeamConfig(){
