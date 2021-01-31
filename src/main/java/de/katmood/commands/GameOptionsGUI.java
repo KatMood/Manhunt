@@ -30,58 +30,59 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
             e.setCancelled(true);
             if(e.getCurrentItem().hasItemMeta()) {
                 if(itemname.equalsIgnoreCase("§b§lFreeze")) {
+                    p.closeInventory();
                     p.performCommand("freezegui");
                 }
             }
         }
         if(invname.equalsIgnoreCase("§b§lFreeze")) {
             e.setCancelled(true);
-            if(itemname.equalsIgnoreCase("§c§lDeaktivieren")); {
-                Manhunt.freeze = false;
-                Manhunt.freezeTime = 0;
-                Manhunt.saveGameData();
-            }
-            if(itemname.equalsIgnoreCase("§f§l5 Sekunken")) {
-                Manhunt.freeze = true;
-                Manhunt.freezeTime = 5;
-                Manhunt.saveGameData();
-            }
-            if(itemname.equalsIgnoreCase("§f§l10 Sekunken")) {
-                Manhunt.freeze = true;
-                Manhunt.freezeTime = 10;
-                Manhunt.saveGameData();
-            }
-            if(itemname.equalsIgnoreCase("§f§l15 Sekunken")) {
-                Manhunt.freeze = true;
-                Manhunt.freezeTime = 15;
-                Manhunt.saveGameData();
-            }
-            if(itemname.equalsIgnoreCase("§f§l30 Sekunken")) {
-                Manhunt.freeze = true;
-                Manhunt.freezeTime = 30;
-                Manhunt.saveGameData();
-            }
-            if(itemname.equalsIgnoreCase("§f§l1 Minute")) {
-                Manhunt.freeze = true;
-                Manhunt.freezeTime = 60;
-                Manhunt.saveGameData();
-            }
-            if(itemname.equalsIgnoreCase("§f§l2 Minuten")) {
-                Manhunt.freeze = true;
-                Manhunt.freezeTime = 120;
-                Manhunt.saveGameData();
-            }
-            if(itemname.equalsIgnoreCase("§f§l3 Minuten")) {
-                Manhunt.freeze = true;
-                Manhunt.freezeTime = 180;
-                Manhunt.saveGameData();
-            }
-            if(itemname.equalsIgnoreCase("§f§l5 Minuten")) {
-                Manhunt.freeze = true;
-                Manhunt.freezeTime = 300;
-                Manhunt.saveGameData();
-            }
-            renderFreeze(e.getInventory());
+                if(itemname.equalsIgnoreCase("§c§lDeaktivieren")); {
+                    Manhunt.freeze = false;
+                    Manhunt.freezeTime = 0;
+                    Manhunt.saveGameData();
+                }
+                if(itemname.equalsIgnoreCase("§f§l5 Sekunken")) {
+                    Manhunt.freeze = true;
+                    Manhunt.freezeTime = 5;
+                    Manhunt.saveGameData();
+                }
+                if(itemname.equalsIgnoreCase("§f§l10 Sekunken")) {
+                    Manhunt.freeze = true;
+                    Manhunt.freezeTime = 10;
+                    Manhunt.saveGameData();
+                }
+                if(itemname.equalsIgnoreCase("§f§l15 Sekunken")) {
+                    Manhunt.freeze = true;
+                    Manhunt.freezeTime = 15;
+                    Manhunt.saveGameData();
+                }
+                if(itemname.equalsIgnoreCase("§f§l30 Sekunken")) {
+                    Manhunt.freeze = true;
+                    Manhunt.freezeTime = 30;
+                    Manhunt.saveGameData();
+                }
+                if(itemname.equalsIgnoreCase("§f§l1 Minute")) {
+                    Manhunt.freeze = true;
+                    Manhunt.freezeTime = 60;
+                    Manhunt.saveGameData();
+                }
+                if(itemname.equalsIgnoreCase("§f§l2 Minuten")) {
+                    Manhunt.freeze = true;
+                    Manhunt.freezeTime = 120;
+                    Manhunt.saveGameData();
+                }
+                if(itemname.equalsIgnoreCase("§f§l3 Minuten")) {
+                    Manhunt.freeze = true;
+                    Manhunt.freezeTime = 180;
+                    Manhunt.saveGameData();
+                }
+                if(itemname.equalsIgnoreCase("§f§l5 Minuten")) {
+                    Manhunt.freeze = true;
+                    Manhunt.freezeTime = 300;
+                    Manhunt.saveGameData();
+                }
+                renderFreeze(e.getInventory());
         }
     }
 

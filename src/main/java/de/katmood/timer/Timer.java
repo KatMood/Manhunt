@@ -26,7 +26,6 @@ public class Timer {
                 int hours = (Manhunt.time / 3600000);
                 int minutes = (Manhunt.time / 60000) % 60;
                 int seconds = (Manhunt.time / 1000) % 60;
-                int milliseconds = (Manhunt.time / 10) % 100;
 
                 StringBuilder message = new StringBuilder("§7§lTimer:§a§l ");
                 message.append(String.format("%02d", hours)).append(":");
