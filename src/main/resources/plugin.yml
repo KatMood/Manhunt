@@ -57,3 +57,5 @@ commands:
   moderatorchange:
     aliases:
       - modchange
+
+  gameoptionsgui:

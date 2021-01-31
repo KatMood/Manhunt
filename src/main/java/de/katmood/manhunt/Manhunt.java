@@ -271,6 +271,7 @@ public class Manhunt extends JavaPlugin {
         getCommand("teaminventory").setExecutor(new TeamInventoryCommand());
         getCommand("moderator").setExecutor(new ModeratorCommand());
         getCommand("moderatorchange").setExecutor(new ModeratorCommand());
+        getCommand("gameoptionsgui").setExecutor(new GameOptionsGUI());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);
@@ -278,6 +279,7 @@ public class Manhunt extends JavaPlugin {
         pm.registerEvents(new TimerOptionsGUI(), this);
         pm.registerEvents(new ManhuntSetCommand(), this);
         pm.registerEvents(new TeamOptionsGUI(), this);
+        pm.registerEvents(new EffectGUI(), this);
 
     }
 
