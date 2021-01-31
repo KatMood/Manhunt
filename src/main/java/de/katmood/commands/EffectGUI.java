@@ -331,7 +331,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 		Player p = (Player)sender;
 		
 		fillPotionEffectLists();
-		setEffectLevel(IntToTeamID(new Random().nextInt(2)), allNotToIgnorePotionEffects()[new Random().nextInt(allNotToIgnorePotionEffects().length-1)], new Random().nextInt(50));
+		//setEffectLevel(IntToTeamID(new Random().nextInt(2)), allNotToIgnorePotionEffects()[new Random().nextInt(allNotToIgnorePotionEffects().length-1)], new Random().nextInt(50));
 		
 		p.openInventory(selectTeamInventory());
 		
