@@ -37,6 +37,8 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
         }
         if(invname.equalsIgnoreCase("§b§lFreeze")) {
             e.setCancelled(true);
+                if(e.getCurrentItem().getType() == Material.BLACK_STAINED_GLASS_PANE)
+                    return;
                 if(itemname.equalsIgnoreCase("§c§lDeaktivieren")); {
                     Manhunt.freeze = false;
                     Manhunt.freezeTime = 0;

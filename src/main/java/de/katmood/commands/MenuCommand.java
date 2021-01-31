@@ -47,6 +47,10 @@ public class MenuCommand implements Listener, CommandExecutor {
                     p.closeInventory();
                     p.performCommand("gameoptionsgui");
                 }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§d§lEffekte")) {
+                    p.closeInventory();
+                    p.performCommand("effectgui");
+                }
             }
         }
     }
