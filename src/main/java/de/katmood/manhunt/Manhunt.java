@@ -104,8 +104,9 @@ public class Manhunt extends JavaPlugin {
                     if(Frozen.get(ck) > 1) {
                         int freezenTime = Frozen.get(ck);
                         int second = freezenTime-1;
+                        int minute = (second / 60);
+                        int hours = (minute / 60);
                         int minutes = (second / 60) % 60;
-                        int hours = (minutes / 60) % 60;
                         int seconds = (second-((minutes-1)*60)) % 60;
                         if(hours > 0) {
                             target.sendMessage(prefix+"§aDu bist noch "+hours+" Stunden, "+minutes+" Minuten und "+seconds+" Sekunden eingefroren!");
