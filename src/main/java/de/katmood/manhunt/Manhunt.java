@@ -4,8 +4,11 @@ import de.katmood.commands.*;
 import de.katmood.events.PlayerChatEvent;
 import de.katmood.timer.Timer;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -244,6 +247,19 @@ public class Manhunt extends JavaPlugin {
 
     }
 
+    public static void setItemNone(Inventory inv, int invsize) {
+
+        ItemStack none = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+
+        ItemMeta none_meta = none.getItemMeta();
+        none_meta.setDisplayName(" ");
+        none.setItemMeta(none_meta);
+
+        for(int i = 0; i < invsize; i++) {
+            inv.setItem(i, none);
+        }
+    }
+
     @Override
     public void onEnable() {
         plugin=this;
@@ -272,6 +288,7 @@ public class Manhunt extends JavaPlugin {
         getCommand("moderator").setExecutor(new ModeratorCommand());
         getCommand("moderatorchange").setExecutor(new ModeratorCommand());
         getCommand("gameoptionsgui").setExecutor(new GameOptionsGUI());
+        getCommand("freezegui").setExecutor(new GameOptionsGUI());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);

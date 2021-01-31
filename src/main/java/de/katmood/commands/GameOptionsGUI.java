@@ -13,7 +13,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import sun.jvm.hotspot.ui.ObjectHistogramPanel;
 
 import java.util.ArrayList;
 
@@ -29,20 +28,72 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
             e.setCancelled(true);
             if(e.getCurrentItem().hasItemMeta()) {
                 if(itemname.equalsIgnoreCase("§b§lFreeze")) {
-                    p.sendMessage("Freeze");
+                    p.performCommand("freezegui");
                 }
             }
         }
     }
 
+    static void renderFreeze(Inventory inv) {
+        ItemStack disable = new ItemStack(Material.RED_WOOL);
+        ItemStack fünf = new ItemStack(Material.PAPER);
+        ItemStack zehn = new ItemStack(Material.PAPER);
+        ItemStack fünfzehn = new ItemStack(Material.PAPER);
+        ItemStack dreißig = new ItemStack(Material.PAPER);
+
+        ItemMeta disable_meta = disable.getItemMeta();
+        disable_meta.setDisplayName("§c§lDeaktivieren");
+        ArrayList<String> disable_lore = new ArrayList<>();
+        disable_lore.add("§eKlicke um den Freeze am Start");
+        disable_lore.add("§eKomplett zu deaktivieren.");
+        disable_meta.setLore(disable_lore);
+        disable.setItemMeta(disable_meta);
+
+        ItemMeta fünf_meta = fünf.getItemMeta();
+        fünf_meta.setDisplayName("§f§l5 Sekunken");
+        ArrayList<String> fünf_lore = new ArrayList<>();
+        fünf_lore.add("§eSetze die FreezeTime am Start");
+        fünf_lore.add("§edes Spiels auf 5 Sekunden.");
+        fünf_meta.setLore(fünf_lore);
+        fünf.setItemMeta(fünf_meta);
+
+        ItemMeta zehn_meta = zehn.getItemMeta();
+        zehn_meta.setDisplayName("§f§l10 Sekunken");
+        ArrayList<String> zehn_lore = new ArrayList<>();
+        zehn_lore.add("§eSetze die FreezeTime am Start");
+        zehn_lore.add("§edes Spiels auf 10 Sekunden.");
+        zehn_meta.setLore(zehn_lore);
+        zehn.setItemMeta(zehn_meta);
+
+        ItemMeta fünfzehn_meta = fünfzehn.getItemMeta();
+        fünfzehn_meta.setDisplayName("§f§l15 Sekunken");
+        ArrayList<String> fünfzehn_lore = new ArrayList<>();
+        fünfzehn_lore.add("§eSetze die FreezeTime am Start");
+        fünfzehn_lore.add("§edes Spiels auf 15 Sekunden.");
+        fünfzehn_meta.setLore(fünfzehn_lore);
+        fünfzehn.setItemMeta(fünfzehn_meta);
+
+        ItemMeta dreißig_meta = dreißig.getItemMeta();
+        dreißig_meta.setDisplayName("§f§l30 Sekunken");
+        ArrayList<String> dreißig_lore = new ArrayList<>();
+        dreißig_lore.add("§eSetze die FreezeTime am Start");
+        dreißig_lore.add("§edes Spiels auf 30 Sekunden.");
+        dreißig_meta.setLore(dreißig_lore);
+        dreißig.setItemMeta(dreißig_meta);
+
+        Manhunt.setItemNone(inv, 9*6);
+
+        inv.setItem(13, disable);
+        inv.setItem(19, fünf);
+        inv.setItem(21, zehn);
+        inv.setItem(23, fünfzehn);
+        inv.setItem(25, dreißig);
+
+    }
+
     static void renderMain(Inventory inv) {
 
-        ItemStack none = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemStack freeze = new ItemStack(Material.PACKED_ICE);
-
-        ItemMeta none_meta = none.getItemMeta();
-        none_meta.setDisplayName(" ");
-        none.setItemMeta(none_meta);
 
         ItemMeta freeze_meta = freeze.getItemMeta();
         freeze_meta.setDisplayName("§b§lFreeze");
@@ -51,9 +102,7 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
         freeze_meta.setLore(freeze_lore);
         freeze.setItemMeta(freeze_meta);
 
-        for(int i = 0; i < 9*3; i++) {
-            inv.setItem(i, none);
-        }
+        Manhunt.setItemNone(inv, 9*3);
 
         inv.setItem(13, freeze);
 
@@ -67,11 +116,19 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
 
         Player p = (Player) sender;
 
-        Inventory GUI = Bukkit.createInventory(null, 9*3, "§a§lGame Options");
+        if(command.getName().equalsIgnoreCase("gameoptionsgui")) {
 
-        renderMain(GUI);
+            Inventory GUI = Bukkit.createInventory(null, 9*3, "§a§lGame Options");
+            renderMain(GUI);
+            p.openInventory(GUI);
+        }
+        if(command.getName().equalsIgnoreCase("freezegui")) {
 
-        p.openInventory(GUI);
+            Inventory Freeze = Bukkit.createInventory(null, 9*6, "§b§lFreeze");
+            renderFreeze(Freeze);
+            p.openInventory(Freeze);
+
+        }
 
         return false;
     }
