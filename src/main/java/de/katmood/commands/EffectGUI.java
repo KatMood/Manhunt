@@ -65,7 +65,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 	static ItemStack noneItem() {
 		ItemStack none = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
 		ItemMeta none_meta = none.getItemMeta();
-        none_meta.setDisplayName(" ");
+        none_meta.setDisplayName(" "); 
         none.setItemMeta(none_meta);
         return none;
 	}
@@ -113,12 +113,39 @@ public class EffectGUI implements CommandExecutor, Listener{
 		try {throw new InvalidTeamIDException();} catch (Exception e) {}
 		return huntedEffects;
 	}
+	static int getPotionLevelByTeam(PotionEffectType potionType, String teamID) {
+		if(getTeamEffectsByTeamID(teamID).containsKey(potionType)) 
+			return getTeamEffectsByTeamID(teamID).get(potionType);
+		return -1;
+	}
+	
+	static ItemStack generatePotionRepresentator(PotionEffectType potionType, String teamID) {
+		ItemStack TypePototion = new ItemStack(Material.POTION, 1);
+		PotionMeta tpm = (PotionMeta)TypePototion.getItemMeta();
+		tpm.addCustomEffect(new PotionEffect(potionType, 1, 1), false);
+		tpm.setColor(potionType.getColor());
+		
+		if(getPotionLevelByTeam(potionType, teamID) == 0) {//lvl: 0 (Effekt aus)
+			tpm.setDisplayName(ChatColor.RED+"(lvl:"+getPotionLevelByTeam(potionType, teamID)+")");
+		}else if(getPotionLevelByTeam(potionType, teamID)>0){		//lvl: >0 (Effekt an)
+			tpm.setDisplayName(ChatColor.GREEN+"(lvl:"+getPotionLevelByTeam(potionType, teamID)+")");
+		}else {
+			tpm.setDisplayName(ChatColor.YELLOW+""+ChatColor.UNDERLINE+"(lvl:"+getPotionLevelByTeam(potionType, teamID)+")[ERROR!]");
+		}
+		TypePototion.setItemMeta(tpm);
+		return TypePototion;
+	}
 	
 	static Inventory selectLevelInventory(PotionEffectType potionType, String teamID) {
 		Inventory toReturn = Bukkit.createInventory(null, 3*9,  ChatColor.GOLD+"Levelauswahl");
 		
 		for(int i = 0; i<3*9;i++)
 			toReturn.setItem(i, noneItem());
+		
+		
+		toReturn.setItem(11, generatePotionRepresentator(potionType, teamID));
+		
+		
 		
 		Bukkit.broadcastMessage("Warning: Open Endpoint...");
 		Bukkit.broadcastMessage("TeamID: \""+teamID+"\"");
@@ -204,24 +231,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 			if(pot) {
 				if(potIndex < potionEffectTypes.length) {
 					PotionEffectType ci = potionEffectTypes[potIndex];
-					
-					PotionEffectType cpt = ci;
-					int currentEffectLevel = -1;
-					if(getTeamEffectsByTeamID(team).containsKey(cpt)) 
-						currentEffectLevel = getTeamEffectsByTeamID(team).get(cpt);
-					ItemStack currentPotion = new ItemStack(Material.POTION, 1);
-					PotionMeta currentPotionMeta = (PotionMeta) currentPotion.getItemMeta();
-					currentPotionMeta.addCustomEffect(new PotionEffect(cpt, 1, 1), false);
-					currentPotionMeta.setColor(cpt.getColor());
-					if(currentEffectLevel == 0) {//lvl: 0 (Effekt aus)
-						currentPotionMeta.setDisplayName(ChatColor.RED+"(lvl:"+currentEffectLevel+")");
-					}else {		//lvl: >0 (Effekt an)
-						currentPotionMeta.setDisplayName(ChatColor.GREEN+"(lvl:"+currentEffectLevel+")");
-						currentPotionMeta.addEnchant(Enchantment.DURABILITY, 1, true);
-					}
-					currentPotion.setItemMeta(currentPotionMeta);
-					
-					toInv.add(currentPotion);
+					toInv.add(generatePotionRepresentator(ci, team));
 					potIndex++;
 				}else {
 					while(!(iteration%9==2)) {
