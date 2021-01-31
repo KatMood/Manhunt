@@ -32,6 +32,8 @@ public class startCommand implements CommandExecutor {
                 Manhunt.freezePlayer(target, Manhunt.freezeTime);
             }
         }
+        if(Manhunt.timerenabled)
+            Manhunt.timer.start();
         return false;
     }
 }
