@@ -81,10 +81,10 @@ public class EffectGUI implements CommandExecutor, Listener{
 	public static final String TEAM_HUNTERS = "HUNTERS", TEAM_HUNTED = "HUNTED";
 	
 	
-	public static String TEAM_SELECTION_HUNTER_TEXT = ChatColor.RED+"Jäger";
+	public static String TEAM_SELECTION_HUNTER_TEXT = ChatColor.RED+"JÃ¤ger";
 	public static String TEAM_SELECTION_HUNTED_TEXT = ChatColor.GREEN+"Gejagte";
 	
-	//Wichtig: Es müssen 4 Effekte Ausgelassen werden, sonst wird das Inventar zu groß und crasht!
+	//Wichtig: Es mï¿½ssen 4 Effekte Ausgelassen werden, sonst wird das Inventar zu groï¿½ und crasht!
 	static final PotionEffectType[] toIgnorePotionEffects = new PotionEffectType[] {PotionEffectType.LEVITATION, PotionEffectType.POISON, PotionEffectType.WITHER, PotionEffectType.BAD_OMEN};
 	
 	static HashMap<PotionEffectType, Integer> hunterEffects = new HashMap<>();

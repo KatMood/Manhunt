@@ -4,8 +4,11 @@ import de.katmood.commands.*;
 import de.katmood.events.PlayerChatEvent;
 import de.katmood.timer.Timer;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -69,6 +72,9 @@ public class Manhunt extends JavaPlugin {
     public static String Started = "Started";
     public static String NWUPath = "NeedWorldUpdate";
     public static String ModPath = "Moderator";
+    public static String GameOpsPath = "Options";
+    public static String FreezePath = "Freeze";
+    public static String FreezeTimePath = "FreezeTime";
     public static String shortInteger(int duration) {
         String string = "";
         int hours = 0;
@@ -112,83 +118,22 @@ public class Manhunt extends JavaPlugin {
     public static boolean tinv = true;
     public static boolean tchat = true;
     public static boolean started = false;
+    public static boolean freeze = false;
 
     public static int time;
+    public static int freezeTime = 0;
 
-    public static void saveModerators() {
-
-        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()) {
-            if(Moderators.containsKey(cp.getName()))
-                plugin.getConfig().set(pdata+"."+cp.getName()+"."+ModPath, Moderators.get(cp.getName()));
-            else
-                plugin.getConfig().set(pdata+"."+cp.getName()+"."+ModPath, false);
-        }
-
-        plugin.saveConfig();
-    }
-
-    public static void loadModerators() {
-
-        Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
-
-        for(String cc : childs) {
-            Boolean mod = plugin.getConfig().getBoolean(pdata+"."+cc+"."+ModPath);
-            Moderators.put(cc, mod);
-        }
-
-    }
-
-    public static void saveNeedWorldUpdate() {
-        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
-            if(NeedWorldUpdate.containsKey(cp.getName()))
-                plugin.getConfig().set(pdata+"."+cp.getName()+"."+NWUPath, NeedWorldUpdate.get(cp.getName()));
-            else
-                plugin.getConfig().set(pdata+"."+cp.getName()+"."+NWUPath, true);
-        }
-
-        plugin.saveConfig();
-    }
-
-    public static void loadNeedWorldUpdate() {
-
-        Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
-
-        for(String cc : childs) {
-            Boolean nwu = plugin.getConfig().getBoolean(pdata+"."+cc+"."+NWUPath);
-            NeedWorldUpdate.put(cc, nwu);
-        }
-
-    }
-
-    public static void saveStarted() {
+    public static void saveGameData() {
         plugin.getConfig().set(game+"."+Started, started);
+        plugin.getConfig().set(game+"."+GameOpsPath+"."+FreezePath, freeze);
+        plugin.getConfig().set(game+"."+GameOpsPath+"."+FreezeTimePath, freezeTime);
         plugin.saveConfig();
     }
 
-    public static void loadStarted() {
+    public static void loadGameData() {
         started = plugin.getConfig().getBoolean(game+"."+Started);
-    }
-
-    public static void saveAlive() {
-        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
-            if(Alive.containsKey(cp.getName()))
-                plugin.getConfig().set(pdata+"."+cp.getName()+"."+AlivePath, Alive.get(cp.getName()));
-            else
-                plugin.getConfig().set(pdata+"."+cp.getName()+"."+AlivePath, true);
-        }
-
-        plugin.saveConfig();
-
-    }
-
-    public static void loadAlive() {
-
-        Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
-
-        for(String cc : childs) {
-            Boolean alive = plugin.getConfig().getBoolean(pdata+"."+cc+"."+AlivePath);
-            Alive.put(cc, alive);
-        }
+        freeze = plugin.getConfig().getBoolean(game+"."+GameOpsPath+"."+FreezePath);
+        freezeTime = plugin.getConfig().getInt(game+"."+GameOpsPath+"."+FreezeTimePath);
     }
 
     public static void saveTeamConfig(){
@@ -219,7 +164,14 @@ public class Manhunt extends JavaPlugin {
         time = plugin.getConfig().getInt(Timer+".Time");
     }
 
-    public static void saveHunted() {
+    public static void savePlayerData() {
+
+        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()) {
+            if(Moderators.containsKey(cp.getName()))
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+ModPath, Moderators.get(cp.getName()));
+            else
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+ModPath, false);
+        }
 
         for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
             if(Hunted.containsKey(cp.getName()))
@@ -228,30 +180,60 @@ public class Manhunt extends JavaPlugin {
                 plugin.getConfig().set(pdata+"."+cp.getName()+"."+HuntPath, false);
         }
 
+        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
+            if(Alive.containsKey(cp.getName()))
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+AlivePath, Alive.get(cp.getName()));
+            else
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+AlivePath, true);
+        }
+
+        for(OfflinePlayer cp : Bukkit.getOfflinePlayers()){
+            if(NeedWorldUpdate.containsKey(cp.getName()))
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+NWUPath, NeedWorldUpdate.get(cp.getName()));
+            else
+                plugin.getConfig().set(pdata+"."+cp.getName()+"."+NWUPath, true);
+        }
+
         plugin.saveConfig();
 
     }
 
-    public static void loadHunted() {
+    public static void loadPlayerData() {
 
         Set<String> childs = Manhunt.plugin.getConfig().getConfigurationSection(pdata).getKeys(false);
 
         for(String cc : childs){
+            Boolean mod = plugin.getConfig().getBoolean(pdata+"."+cc+"."+ModPath);
             Boolean hunted = plugin.getConfig().getBoolean(pdata+"."+cc+"."+HuntPath);
+            Boolean alive = plugin.getConfig().getBoolean(pdata+"."+cc+"."+AlivePath);
+            Boolean nwu = plugin.getConfig().getBoolean(pdata+"."+cc+"."+NWUPath);
+            Moderators.put(cc, mod);
             Hunted.put(cc, hunted);
+            Alive.put(cc, alive);
+            NeedWorldUpdate.put(cc, nwu);
         }
 
 
     }
 
+    public static void setItemNone(Inventory inv, int invsize) {
+
+        ItemStack none = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+
+        ItemMeta none_meta = none.getItemMeta();
+        none_meta.setDisplayName(" ");
+        none.setItemMeta(none_meta);
+
+        for(int i = 0; i < invsize; i++) {
+            inv.setItem(i, none);
+        }
+    }
+
     @Override
     public void onEnable() {
         plugin=this;
-        loadStarted();
-        loadModerators();
-        loadHunted();
-        loadAlive();
-        loadNeedWorldUpdate();
+        loadGameData();
+        loadPlayerData();
         loadTimer();
         loadTeamConfig();
 
@@ -271,6 +253,8 @@ public class Manhunt extends JavaPlugin {
         getCommand("teaminventory").setExecutor(new TeamInventoryCommand());
         getCommand("moderator").setExecutor(new ModeratorCommand());
         getCommand("moderatorchange").setExecutor(new ModeratorCommand());
+        getCommand("gameoptionsgui").setExecutor(new GameOptionsGUI());
+        getCommand("freezegui").setExecutor(new GameOptionsGUI());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);
@@ -278,16 +262,15 @@ public class Manhunt extends JavaPlugin {
         pm.registerEvents(new TimerOptionsGUI(), this);
         pm.registerEvents(new ManhuntSetCommand(), this);
         pm.registerEvents(new TeamOptionsGUI(), this);
+        pm.registerEvents(new EffectGUI(), this);
+        pm.registerEvents(new GameOptionsGUI(), this);
 
     }
 
     @Override
     public void onDisable() {
-       saveStarted();
-       saveModerators();
-       saveHunted();
-       saveAlive();
-       saveNeedWorldUpdate();
+       saveGameData();
+       savePlayerData();
        saveTeamConfig();
        saveTimer();
     }

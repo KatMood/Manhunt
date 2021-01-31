@@ -3,7 +3,6 @@ package de.katmood.commands;
 import de.katmood.manhunt.Manhunt;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -153,7 +152,7 @@ public class ManhuntSetCommand implements Listener, CommandExecutor {
                         }
                         Manhunt.Hunted.put(args[0], true);
                         Manhunt.Hunted.put(args[1], true);
-                        Manhunt.saveHunted();
+                        Manhunt.savePlayerData();
                         p.sendMessage(Manhunt.prefix+"§aDie gejagten Spieler sind nun §c"+args[0]+" §aund §c"+args[1]);
                     }
                 }

@@ -50,11 +50,11 @@ public class ModeratorCommand implements CommandExecutor {
                         if(args[1].equalsIgnoreCase("true")) {
                             Manhunt.Moderators.put(target.getName(), true);
                             sender.sendMessage(Manhunt.prefix+"§7"+target.getName()+" §aist nun ein Moderator.");
-                            Manhunt.saveModerators();
+                            Manhunt.savePlayerData();
                         } else if (args[1].equalsIgnoreCase("false")) {
                             Manhunt.Moderators.put(target.getName(), false);
                             sender.sendMessage(Manhunt.prefix+"§7"+target.getName()+" §aist nun kein Moderator.");
-                            Manhunt.saveModerators();
+                            Manhunt.savePlayerData();
                         } else
                             sender.sendMessage(Manhunt.prefix+"§c/moderatorchange <Spieler> <true/false>");
                     } else
