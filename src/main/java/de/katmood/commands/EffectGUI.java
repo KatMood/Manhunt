@@ -40,8 +40,8 @@ import de.katmood.manhunt.Manhunt;
 public class EffectGUI implements CommandExecutor, Listener{
 	
 	
-	public static String effectListPath = "EFFECT_LIST";
-	static void saveEffectLevelsInConfig() {
+	static String effectListPath = "EFFECT_LIST";
+	public static void saveEffectLevelsInConfig() {
 		fillPotionEffectLists();
 		for(PotionEffectType cpt : huntedEffects.keySet()) {
 			if(cpt != null) {
@@ -55,7 +55,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 		Manhunt.plugin.saveConfig();
 	}
 	
-	static void loadEffectLevelsFromConfig() {
+	public static void loadEffectLevelsFromConfig() {
 		fillPotionEffectLists();
 		if(Manhunt.plugin.getConfig().isSet(effectListPath)) {
 			for(String c : Manhunt.plugin.getConfig().getConfigurationSection(effectListPath+"."+TEAM_HUNTED).getKeys(false)) {
@@ -299,7 +299,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 	
 	
 	
-	public static boolean shouldIgnorePotionEffect(PotionEffectType pt) {
+	static boolean shouldIgnorePotionEffect(PotionEffectType pt) {
 		for(PotionEffectType cpt : toIgnorePotionEffects) {
 			if(cpt.getId()==pt.getId())
 				return true;

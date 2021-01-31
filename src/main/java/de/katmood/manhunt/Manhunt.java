@@ -195,6 +195,7 @@ public class Manhunt extends JavaPlugin {
         }
 
         plugin.saveConfig();
+        EffectGUI.saveEffectLevelsInConfig();
 
     }
 
@@ -265,6 +266,8 @@ public class Manhunt extends JavaPlugin {
         pm.registerEvents(new EffectGUI(), this);
         pm.registerEvents(new GameOptionsGUI(), this);
 
+        
+        EffectGUI.loadEffectLevelsFromConfig();
     }
 
     @Override
