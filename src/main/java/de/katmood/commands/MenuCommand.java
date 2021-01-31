@@ -51,6 +51,10 @@ public class MenuCommand implements Listener, CommandExecutor {
                     p.closeInventory();
                     p.performCommand("effectgui");
                 }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§a§lStart")) {
+                    p.closeInventory();
+                    p.performCommand("start");
+                }
             }
         }
     }
@@ -70,6 +74,7 @@ public class MenuCommand implements Listener, CommandExecutor {
             ItemStack effects = new ItemStack(Material.POTION);
             ItemStack info = new ItemStack(Material.PAPER);
             ItemStack gameops = new ItemStack(Material.COMPARATOR);
+            ItemStack start = new ItemStack(Material.LIME_WOOL);
 
             ItemMeta none_meta = none.getItemMeta();
             none_meta.setDisplayName(" ");
@@ -134,6 +139,14 @@ public class MenuCommand implements Listener, CommandExecutor {
             gameops_meta.setLore(gameops_lore);
             gameops.setItemMeta(gameops_meta);
 
+            ItemMeta start_meta = start.getItemMeta();
+            start_meta.setDisplayName("§a§lStart");
+            ArrayList<String> start_lore = new ArrayList<>();
+            start_lore.add("§eKlicke um das Spiel");
+            start_lore.add("§ezu starten.");
+            start_meta.setLore(start_lore);
+            start.setItemMeta(start_meta);
+
             menu.setItem(0, none);
             menu.setItem(1, none);
             menu.setItem(2, none);
@@ -155,7 +168,7 @@ public class MenuCommand implements Listener, CommandExecutor {
             menu.setItem(18, none);
             menu.setItem(19, non);
             menu.setItem(20, non);
-            menu.setItem(21, non);
+            menu.setItem(21, start);
             menu.setItem(22, non);
             menu.setItem(23, gameops);
             menu.setItem(24, non);
