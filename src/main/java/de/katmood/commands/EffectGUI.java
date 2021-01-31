@@ -2,6 +2,7 @@ package de.katmood.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,44 +36,6 @@ public class EffectGUI implements CommandExecutor, Listener{
 	
 	
 	
-	public static final String TEAM_HUNTERS = "HUNTERS", TEAM_HUNTED = "HUNTED";
-	
-	
-	public static String TEAM_SELECTION_HUNTER_TEXT = ChatColor.RED+"Jäger";
-	public static String TEAM_SELECTION_HUNTED_TEXT = ChatColor.GREEN+"Gejagte";
-	
-	static HashMap<PotionEffectType, Integer> hunterEffects = new HashMap<>();
-	static HashMap<PotionEffectType, Integer> huntedEffects = new HashMap<>();
-	
-	
-	static int TeamIDToInt(String teamID) {
-		if(teamID.equalsIgnoreCase(TEAM_HUNTERS))
-			return 0;
-		else if(teamID.equalsIgnoreCase(TEAM_HUNTED))
-			return 1;
-		return -1;
-	}
-	
-	static String IntToTeamID(int value) {
-		if(value==0)
-			return TEAM_HUNTERS;
-		else if(value==1)
-			return TEAM_HUNTED;
-		return "ERROR!";
-	}
-	
-	static ItemStack noneItem() {
-		ItemStack none = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-		ItemMeta none_meta = none.getItemMeta();
-        none_meta.setDisplayName(" ");
-        none.setItemMeta(none_meta);
-        return none;
-	}
-	
-	
-	//Wichtig: Es m�ssen 4 Effekte Ausgelassen werden, sonst wird das Inventar zu gro� und crasht!
-	static final PotionEffectType[] toIgnorePotionEffects = new PotionEffectType[] {PotionEffectType.LEVITATION, PotionEffectType.POISON, PotionEffectType.WITHER, PotionEffectType.BAD_OMEN};
-	
 	@EventHandler
 	public void onInventroyClick(InventoryClickEvent e) {
 		String invTitle = e.getView().getTitle();
@@ -81,7 +43,19 @@ public class EffectGUI implements CommandExecutor, Listener{
 		
 		if(invTitle.startsWith(ChatColor.GOLD+"Levelauswahl")) {
 			e.setCancelled(true);
+			PotionMeta pm = (PotionMeta) e.getInventory().getItem(11).getItemMeta();
+			PotionEffectType currentType = pm.getCustomEffects().get(0).getType();
+			String teamID = IntToTeamID(Integer.valueOf(invTitle.replace(ChatColor.GOLD+"Levelauswahl_", "")));
 			
+			if(clicked.equals(plusButton())) {
+				e.getWhoClicked().sendMessage("plus... [teamID: "+teamID+" | type: "+currentType.getName()+"]");
+				setEffectLevel(teamID, currentType, getPotionLevelByTeam(currentType, teamID)+1);
+			}
+			if(clicked.equals(minusButton())) {
+				e.getWhoClicked().sendMessage("minus... [teamID: "+teamID+" | type: "+currentType.getName()+"]");
+				setEffectLevel(teamID, currentType, getPotionLevelByTeam(currentType, teamID)-1);
+			}
+			drawLevelSelectInventory(e.getInventory(), currentType, teamID);
 		}
 		
 		if(invTitle.startsWith(ChatColor.BLUE+"Teamefekte")) {
@@ -102,6 +76,103 @@ public class EffectGUI implements CommandExecutor, Listener{
 		
 	}
 	
+	
+	
+	public static final String TEAM_HUNTERS = "HUNTERS", TEAM_HUNTED = "HUNTED";
+	
+	
+	public static String TEAM_SELECTION_HUNTER_TEXT = ChatColor.RED+"Jäger";
+	public static String TEAM_SELECTION_HUNTED_TEXT = ChatColor.GREEN+"Gejagte";
+	
+	//Wichtig: Es m�ssen 4 Effekte Ausgelassen werden, sonst wird das Inventar zu gro� und crasht!
+	static final PotionEffectType[] toIgnorePotionEffects = new PotionEffectType[] {PotionEffectType.LEVITATION, PotionEffectType.POISON, PotionEffectType.WITHER, PotionEffectType.BAD_OMEN};
+	
+	static HashMap<PotionEffectType, Integer> hunterEffects = new HashMap<>();
+	static HashMap<PotionEffectType, Integer> huntedEffects = new HashMap<>();
+	
+	static ItemStack minusButton() {
+		ItemStack toReturn = new ItemStack(Material.BLACK_DYE);
+		ItemMeta meta = toReturn.getItemMeta();
+		meta.setDisplayName("-1");
+		toReturn.setItemMeta(meta);
+		return toReturn;
+	}
+	
+	static ItemStack plusButton() {
+		ItemStack toReturn = new ItemStack(Material.NETHER_STAR);
+		ItemMeta meta = toReturn.getItemMeta();
+		meta.setDisplayName("+1");
+		toReturn.setItemMeta(meta);
+		return toReturn;
+	}
+	
+	static ItemStack showLevelItemStack(PotionEffectType type, String teamID) {
+		ItemStack toReturn;
+		if(getPotionLevelByTeam(type, teamID)==0) {
+			toReturn = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+			ItemMeta meta = toReturn.getItemMeta();
+			meta.setDisplayName("Nicht Aktiv!");
+			toReturn.setItemMeta(meta);
+		}else {
+			toReturn = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+			ItemMeta meta = toReturn.getItemMeta();
+			meta.setDisplayName(String.valueOf(getPotionLevelByTeam(type, teamID)));
+			toReturn.setAmount(getPotionLevelByTeam(type, teamID));
+			toReturn.setItemMeta(meta);
+		}
+		
+		
+		return toReturn;
+	}
+	
+	static PotionEffectType[] allNotToIgnorePotionEffects() {
+		PotionEffectType[] potionEffectTypes = new PotionEffectType[PotionEffectType.values().length-toIgnorePotionEffects.length];
+		
+		int inIterator = 0;
+		for(int i = 0; i< PotionEffectType.values().length;i++) {
+			PotionEffectType cpe = PotionEffectType.values()[i];
+			if(!shouldIgnorePotionEffect(cpe)) {
+				potionEffectTypes[inIterator]=cpe;
+				inIterator++;
+			}
+		}
+		return potionEffectTypes;
+	}
+	
+	static void fillPotionEffectLists() {
+		for(PotionEffectType cpt : allNotToIgnorePotionEffects()) {
+			if(!huntedEffects.containsKey(cpt))
+				huntedEffects.put(cpt, 0);
+			if(!hunterEffects.containsKey(cpt))
+				hunterEffects.put(cpt, 0);
+		}
+	}
+	
+	static int TeamIDToInt(String teamID) {
+		if(teamID.equalsIgnoreCase(TEAM_HUNTERS))
+			return 0;
+		else if(teamID.equalsIgnoreCase(TEAM_HUNTED))
+			return 1;
+		try {throw new InvalidTeamIDException();} catch (InvalidTeamIDException e) {e.printStackTrace();}
+		return -1;
+	}
+	
+	static String IntToTeamID(int value) {
+		if(value==0)
+			return TEAM_HUNTERS;
+		else if(value==1)
+			return TEAM_HUNTED;
+		return "ERROR!";
+	}
+	
+	static ItemStack noneItem() {
+		ItemStack none = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+		ItemMeta none_meta = none.getItemMeta();
+        none_meta.setDisplayName(" "); 
+        none.setItemMeta(none_meta);
+        return none;
+	}
+	
 
 	static HashMap<PotionEffectType, Integer> getTeamEffectsByTeamID(String teamID) {
 		if(teamID.equalsIgnoreCase("HUNTERS"))
@@ -113,16 +184,53 @@ public class EffectGUI implements CommandExecutor, Listener{
 		try {throw new InvalidTeamIDException();} catch (Exception e) {}
 		return huntedEffects;
 	}
+	static int getPotionLevelByTeam(PotionEffectType potionType, String teamID) {
+		if(getTeamEffectsByTeamID(teamID).containsKey(potionType)) 
+			return getTeamEffectsByTeamID(teamID).get(potionType);
+		return -1;
+	}
 	
-	static Inventory selectLevelInventory(PotionEffectType potionType, String teamID) {
-		Inventory toReturn = Bukkit.createInventory(null, 3*9,  ChatColor.GOLD+"Levelauswahl");
+	static ItemStack generatePotionRepresentator(PotionEffectType potionType, String teamID) {
+		ItemStack TypePototion = new ItemStack(Material.POTION, 1);
+		PotionMeta tpm = (PotionMeta)TypePototion.getItemMeta();
+		tpm.addCustomEffect(new PotionEffect(potionType, 1, 1), false);
+		tpm.setColor(potionType.getColor());
+		
+		if(getPotionLevelByTeam(potionType, teamID) == 0) {//lvl: 0 (Effekt aus)
+			tpm.setDisplayName(ChatColor.RED+"(lvl:"+getPotionLevelByTeam(potionType, teamID)+")");
+		}else if(getPotionLevelByTeam(potionType, teamID)>0){		//lvl: >0 (Effekt an)
+			tpm.setDisplayName(ChatColor.GREEN+"(lvl:"+getPotionLevelByTeam(potionType, teamID)+")");
+		}else {
+			tpm.setDisplayName(ChatColor.YELLOW+""+ChatColor.UNDERLINE+"(lvl:"+getPotionLevelByTeam(potionType, teamID)+")[ERROR!]");
+		}
+		TypePototion.setItemMeta(tpm);
+		return TypePototion;
+	}
+	
+	
+	static void setEffectLevel(String teamID, PotionEffectType toSet, int level) {
+		HashMap<PotionEffectType, Integer> foundMap = getTeamEffectsByTeamID(teamID);
+		foundMap.put(toSet, level);
+	}
+	
+	static void drawLevelSelectInventory(Inventory currentInv, PotionEffectType potionType, String teamID) {
 		
 		for(int i = 0; i<3*9;i++)
-			toReturn.setItem(i, noneItem());
+			currentInv.setItem(i, noneItem());
 		
-		Bukkit.broadcastMessage("Warning: Open Endpoint...");
-		Bukkit.broadcastMessage("TeamID: \""+teamID+"\"");
-		Bukkit.broadcastMessage("PotionType: \""+potionType.getName()+"\"");
+		
+		currentInv.setItem(11, generatePotionRepresentator(potionType, teamID));
+		
+		currentInv.setItem(5, plusButton());
+		currentInv.setItem(14, showLevelItemStack(potionType, teamID));
+		currentInv.setItem(23, minusButton());
+		
+	}
+	
+	static Inventory selectLevelInventory(PotionEffectType potionType, String teamID) {
+		Inventory toReturn = Bukkit.createInventory(null, 3*9,  ChatColor.GOLD+"Levelauswahl_"+String.valueOf(TeamIDToInt(teamID)));
+		
+		drawLevelSelectInventory(toReturn, potionType, teamID);
 		
 		return toReturn;
 	}
@@ -165,22 +273,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 	
 	static Inventory selectEffectInventory(String team) {
 		
-		
-		
-		
-		PotionEffectType[] potionEffectTypes = new PotionEffectType[PotionEffectType.values().length-toIgnorePotionEffects.length];
-		
-		int inIterator = 0;
-		for(int i = 0; i< PotionEffectType.values().length;i++) {
-			PotionEffectType cpe = PotionEffectType.values()[i];
-			if(!shouldIgnorePotionEffect(cpe)) {
-				potionEffectTypes[inIterator]=cpe;
-				inIterator++;
-			}
-				
-			
-		}
-		
+		PotionEffectType[] potionEffectTypes = allNotToIgnorePotionEffects();
 		
 		ArrayList<ItemStack> toInv = new ArrayList<>();
 		
@@ -204,24 +297,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 			if(pot) {
 				if(potIndex < potionEffectTypes.length) {
 					PotionEffectType ci = potionEffectTypes[potIndex];
-					
-					PotionEffectType cpt = ci;
-					int currentEffectLevel = -1;
-					if(getTeamEffectsByTeamID(team).containsKey(cpt)) 
-						currentEffectLevel = getTeamEffectsByTeamID(team).get(cpt);
-					ItemStack currentPotion = new ItemStack(Material.POTION, 1);
-					PotionMeta currentPotionMeta = (PotionMeta) currentPotion.getItemMeta();
-					currentPotionMeta.addCustomEffect(new PotionEffect(cpt, 1, 1), false);
-					currentPotionMeta.setColor(cpt.getColor());
-					if(currentEffectLevel == 0) {//lvl: 0 (Effekt aus)
-						currentPotionMeta.setDisplayName(ChatColor.RED+"(lvl:"+currentEffectLevel+")");
-					}else {		//lvl: >0 (Effekt an)
-						currentPotionMeta.setDisplayName(ChatColor.GREEN+"(lvl:"+currentEffectLevel+")");
-						currentPotionMeta.addEnchant(Enchantment.DURABILITY, 1, true);
-					}
-					currentPotion.setItemMeta(currentPotionMeta);
-					
-					toInv.add(currentPotion);
+					toInv.add(generatePotionRepresentator(ci, team));
 					potIndex++;
 				}else {
 					while(!(iteration%9==2)) {
@@ -253,6 +329,9 @@ public class EffectGUI implements CommandExecutor, Listener{
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		
 		Player p = (Player)sender;
+		
+		fillPotionEffectLists();
+		//setEffectLevel(IntToTeamID(new Random().nextInt(2)), allNotToIgnorePotionEffects()[new Random().nextInt(allNotToIgnorePotionEffects().length-1)], new Random().nextInt(50));
 		
 		p.openInventory(selectTeamInventory());
 		
