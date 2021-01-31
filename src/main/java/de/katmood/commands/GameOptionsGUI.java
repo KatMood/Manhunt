@@ -32,6 +32,9 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
                 }
             }
         }
+        if(invname.equalsIgnoreCase("§b§lFreeze")) {
+            e.setCancelled(true);
+        }
     }
 
     static void renderFreeze(Inventory inv) {
