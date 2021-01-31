@@ -2,10 +2,12 @@ package de.katmood.manhunt;
 
 import de.katmood.commands.*;
 import de.katmood.events.PlayerChatEvent;
+import de.katmood.events.PlayerMove;
 import de.katmood.timer.Timer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -24,6 +26,7 @@ public class Manhunt extends JavaPlugin {
     public static HashMap<String, Boolean> Alive = new HashMap<>();
     public static HashMap<String, Boolean> NeedWorldUpdate = new HashMap<>();
     public static HashMap<String, Boolean> Moderators = new HashMap<>();
+    public static HashMap<String, Integer> Frozen = new HashMap<>();
 
     public static ArrayList<String> getHunteds() {
         ArrayList<String> hunteds = new ArrayList<>();
@@ -75,41 +78,6 @@ public class Manhunt extends JavaPlugin {
     public static String GameOpsPath = "Options";
     public static String FreezePath = "Freeze";
     public static String FreezeTimePath = "FreezeTime";
-    public static String shortInteger(int duration) {
-        String string = "";
-        int hours = 0;
-        int minutes = 0;
-        int seconds = 0;
-        if (duration / 60 / 60 / 24 >= 1) {
-            duration -= duration / 60 / 60 / 24 * 60 * 60 * 24;
-        }
-        if (duration / 60 / 60 >= 1) {
-            hours = duration / 60 / 60;
-            duration -= duration / 60 / 60 * 60 * 60;
-        }
-        if (duration / 60 >= 1) {
-            minutes = duration / 60;
-            duration -= duration / 60 * 60;
-        }
-        if (duration >= 1)
-            seconds = duration;
-        if (hours <= 9) {
-            string = String.valueOf(string) + "0" + hours + ":";
-        } else {
-            string = String.valueOf(string) + hours + ":";
-        }
-        if (minutes <= 9) {
-            string = String.valueOf(string) + "0" + minutes + ":";
-        } else {
-            string = String.valueOf(string) + minutes + ":";
-        }
-        if (seconds <= 9) {
-            string = String.valueOf(string) + "0" + seconds;
-        } else {
-            string = String.valueOf(string) + seconds;
-        }
-        return string;
-    }
 
     public static boolean teamchat = true;
     public static boolean timerenabled = true;
@@ -122,6 +90,44 @@ public class Manhunt extends JavaPlugin {
 
     public static int time;
     public static int freezeTime = 0;
+
+    public static void freezePlayer(Player p, int time) {
+        Frozen.put(p.getName(), time);
+    }
+
+    public static void loadRunnable() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Manhunt.plugin, new Runnable() {
+            @Override
+            public void run() {
+                for(String ck : Frozen.keySet()) {
+                    Player target = Bukkit.getPlayer(ck);
+                    if(Frozen.get(ck) > 1) {
+                        int freezenTime = Frozen.get(ck);
+                        int second = freezenTime-1;
+                        int minutes = (second / 60) % 60;
+                        int hours = (minutes / 60) % 60;
+                        int seconds = (second-((minutes-1)*60)) % 60;
+                        if(hours > 0) {
+                            target.sendMessage(prefix+"§aDu bist noch "+hours+" Stunden, "+minutes+" Minuten und "+seconds+" Sekunden eingefroren!");
+                        } else if (minutes > 0) {
+                            target.sendMessage(prefix+"§aDu bist noch "+minutes+" Minuten und "+seconds+" Sekunden eingefroren!");
+                        } else {
+                            target.sendMessage(prefix+"§aDu bist noch "+seconds+" Sekunden eingefroren!");
+
+                        }
+
+                    }
+                    if(Frozen.get(ck) == 1) {
+                        target.sendMessage(prefix+"§aDu bist nicht mehr eingefroren!");
+                    }
+                    if(Frozen.get(ck) > 0) {
+                        Frozen.put(ck, Frozen.get(ck)-1);
+                    }
+
+                }
+            }
+        }, 0, 20);
+    }
 
     public static void saveGameData() {
         plugin.getConfig().set(game+"."+Started, started);
@@ -237,6 +243,7 @@ public class Manhunt extends JavaPlugin {
         loadPlayerData();
         loadTimer();
         loadTeamConfig();
+        loadRunnable();
 
         Moderators.put("KatMood", true);
 
@@ -256,6 +263,7 @@ public class Manhunt extends JavaPlugin {
         getCommand("moderatorchange").setExecutor(new ModeratorCommand());
         getCommand("gameoptionsgui").setExecutor(new GameOptionsGUI());
         getCommand("freezegui").setExecutor(new GameOptionsGUI());
+        getCommand("freeze").setExecutor(new FreezeCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);
@@ -265,6 +273,7 @@ public class Manhunt extends JavaPlugin {
         pm.registerEvents(new TeamOptionsGUI(), this);
         pm.registerEvents(new EffectGUI(), this);
         pm.registerEvents(new GameOptionsGUI(), this);
+        pm.registerEvents(new PlayerMove(), this);
 
         
         EffectGUI.loadEffectLevelsFromConfig();

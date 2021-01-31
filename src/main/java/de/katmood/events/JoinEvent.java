@@ -14,5 +14,8 @@ public class JoinEvent implements Listener {
         if(!(Manhunt.getHunteds().contains(p))){
             Manhunt.Hunted.put(p.getName(), false);
         }
+        if(!(Manhunt.Frozen.containsKey(p.getName()))) {
+            Manhunt.Frozen.put(p.getName(), 0);
+        }
     }
 }
