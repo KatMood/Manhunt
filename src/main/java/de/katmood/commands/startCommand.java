@@ -34,6 +34,8 @@ public class startCommand implements CommandExecutor {
         }
         if(Manhunt.timerenabled)
             Manhunt.timer.start();
+
+        EffectGUI.applyEffectsToEveryPlayer();
         return false;
     }
 }

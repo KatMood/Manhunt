@@ -11,8 +11,10 @@ public class PlayerMove implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
-        if(Manhunt.Frozen.get(p.getName()) > 0) {
-            e.setCancelled(true);
+        if(Manhunt.Frozen.containsKey(p.getName())) {
+            if(Manhunt.Frozen.get(p.getName()) > 0) {
+                e.setCancelled(true);
+            }
         }
     }
 

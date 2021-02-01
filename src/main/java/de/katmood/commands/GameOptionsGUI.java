@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GameOptionsGUI implements Listener, CommandExecutor {
 
@@ -24,7 +25,7 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
     public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         String invname = e.getView().getTitle();
-        String itemname = e.getCurrentItem().getItemMeta().getDisplayName();
+        String itemname = Objects.requireNonNull(e.getCurrentItem()).getItemMeta().getDisplayName();
 
         if(invname.equalsIgnoreCase("§a§lGame Options")) {
             e.setCancelled(true);

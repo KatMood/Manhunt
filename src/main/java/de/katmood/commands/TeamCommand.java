@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TeamCommand implements Listener, CommandExecutor {
 
@@ -22,7 +23,7 @@ public class TeamCommand implements Listener, CommandExecutor {
     public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         String invname = e.getView().getTitle();
-        String itemname = e.getCurrentItem().getItemMeta().getDisplayName();
+        String itemname = Objects.requireNonNull(e.getCurrentItem()).getItemMeta().getDisplayName();
 
         if(invname.equalsIgnoreCase("§b§lTeam")) {
             e.setCancelled(true);

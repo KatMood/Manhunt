@@ -23,8 +23,9 @@ public class StopCommand implements CommandExecutor {
         Bukkit.broadcastMessage(Manhunt.prefix+"§cDas Spiel wurde gestoppt");
 
         for(int i = 0; i < Bukkit.getOnlinePlayers().size(); i++) {
-            Player target = Bukkit.getOfflinePlayers()[i].getPlayer();
-            Manhunt.Frozen.put(target.getName(), 0);
+            String target = Bukkit.getOfflinePlayers()[i].getPlayer().getName();
+            Manhunt.Frozen.put(target, 0);
+
         }
 
 
