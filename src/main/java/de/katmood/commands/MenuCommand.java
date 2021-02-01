@@ -55,6 +55,10 @@ public class MenuCommand implements Listener, CommandExecutor {
                     p.closeInventory();
                     p.performCommand("start");
                 }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§c§lStop")) {
+                    p.closeInventory();
+                    p.performCommand("stop");
+                }
             }
         }
     }
@@ -75,6 +79,7 @@ public class MenuCommand implements Listener, CommandExecutor {
             ItemStack info = new ItemStack(Material.PAPER);
             ItemStack gameops = new ItemStack(Material.COMPARATOR);
             ItemStack start = new ItemStack(Material.LIME_WOOL);
+            ItemStack stop = new ItemStack(Material.RED_WOOL);
 
             ItemMeta none_meta = none.getItemMeta();
             none_meta.setDisplayName(" ");
@@ -147,6 +152,14 @@ public class MenuCommand implements Listener, CommandExecutor {
             start_meta.setLore(start_lore);
             start.setItemMeta(start_meta);
 
+            ItemMeta stop_meta = stop.getItemMeta();
+            stop_meta.setDisplayName("§c§lStop");
+            ArrayList<String> stop_lore = new ArrayList<>();
+            stop_lore.add("§eKlicke um das Spiel");
+            stop_lore.add("§ezu stoppen.");
+            stop_meta.setLore(stop_lore);
+            stop.setItemMeta(stop_meta);
+
             menu.setItem(0, none);
             menu.setItem(1, none);
             menu.setItem(2, none);
@@ -168,7 +181,10 @@ public class MenuCommand implements Listener, CommandExecutor {
             menu.setItem(18, none);
             menu.setItem(19, non);
             menu.setItem(20, non);
-            menu.setItem(21, start);
+            if(Manhunt.started)
+                menu.setItem(21, stop);
+            if(!Manhunt.started)
+                menu.setItem(21, start);
             menu.setItem(22, non);
             menu.setItem(23, gameops);
             menu.setItem(24, non);

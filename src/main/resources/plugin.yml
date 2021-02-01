@@ -65,3 +65,5 @@ commands:
   start:
 
   deathoptionsgui:
+
+  stop:

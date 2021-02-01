@@ -16,7 +16,7 @@ public class startCommand implements CommandExecutor {
 
         Player p = (Player) sender;
 
-        //Manhunt.started = true;
+        Manhunt.started = true;
 
         Bukkit.broadcastMessage(Manhunt.prefix+"§aDas Spiel wurde gestartet!");
         String message = Manhunt.prefix+"§7";
