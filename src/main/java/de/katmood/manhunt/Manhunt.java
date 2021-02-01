@@ -270,6 +270,7 @@ public class Manhunt extends JavaPlugin {
         getCommand("start").setExecutor(new startCommand());
         getCommand("deathoptionsgui").setExecutor(new DeathOptionsGUI());
         getCommand("stop").setExecutor(new StopCommand());
+        getCommand("team").setExecutor(new TeamCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);
@@ -282,6 +283,7 @@ public class Manhunt extends JavaPlugin {
         pm.registerEvents(new PlayerMove(), this);
         pm.registerEvents(new PlayerBreak(), this);
         pm.registerEvents(new DeathOptionsGUI(), this);
+        pm.registerEvents(new TeamCommand(), this);
 
         
         EffectGUI.loadEffectLevelsFromConfig();
