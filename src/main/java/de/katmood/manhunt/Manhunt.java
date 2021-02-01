@@ -88,6 +88,7 @@ public class Manhunt extends JavaPlugin {
     public static boolean tchat = true;
     public static boolean started = false;
     public static boolean freeze = false;
+    public static boolean kill_all = false;
 
     public static int time;
     public static int freezeTime = 0;
@@ -267,6 +268,7 @@ public class Manhunt extends JavaPlugin {
         getCommand("freezegui").setExecutor(new GameOptionsGUI());
         //getCommand("freeze").setExecutor(new FreezeCommand());
         getCommand("start").setExecutor(new startCommand());
+        getCommand("deathoptionsgui").setExecutor(new DeathOptionsGUI());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuCommand(), this);
@@ -278,6 +280,7 @@ public class Manhunt extends JavaPlugin {
         pm.registerEvents(new GameOptionsGUI(), this);
         pm.registerEvents(new PlayerMove(), this);
         pm.registerEvents(new PlayerBreak(), this);
+        pm.registerEvents(new DeathOptionsGUI(), this);
 
         
         EffectGUI.loadEffectLevelsFromConfig();

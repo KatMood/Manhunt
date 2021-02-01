@@ -33,6 +33,10 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
                     p.closeInventory();
                     p.performCommand("freezegui");
                 }
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§c§lTod")) {
+                    p.closeInventory();
+                    p.performCommand("deathoptionsgui");
+                }
             }
         }
         if(invname.equalsIgnoreCase("§b§lFreeze")) {
@@ -240,6 +244,7 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
     static void renderMain(Inventory inv) {
 
         ItemStack freeze = new ItemStack(Material.PACKED_ICE);
+        ItemStack death = new ItemStack(Material.ZOMBIE_HEAD);
 
         ItemMeta freeze_meta = freeze.getItemMeta();
         freeze_meta.setDisplayName("§b§lFreeze");
@@ -248,9 +253,18 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
         freeze_meta.setLore(freeze_lore);
         freeze.setItemMeta(freeze_meta);
 
+        ItemMeta death_meta = death.getItemMeta();
+        death_meta.setDisplayName("§c§lTod");
+        ArrayList<String> death_lore = new ArrayList<>();
+        death_lore.add("§eKlicke um Einstellungen über");
+        death_lore.add("§eden Tod der Gejagten einzustellen");
+        death_meta.setLore(death_lore);
+        death.setItemMeta(death_meta);
+
         Manhunt.setItemNone(inv, 9*3);
 
-        inv.setItem(13, freeze);
+        inv.setItem(12, freeze);
+        inv.setItem(14, death);
 
     }
 
