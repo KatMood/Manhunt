@@ -22,18 +22,17 @@ public class InventoryManager {
 		Manhunt.plugin.saveConfig();
 	}
 	
-	public static Inventory loadInv(String configurationPath) {
-		Inventory teamInv = Bukkit.createInventory(null, 3*9);
+	public static Inventory loadInv(String configurationPath, Inventory toOverwrite) {
 		if(Manhunt.plugin.getConfig().isSet(configurationPath)) {
-			ItemStack[] contents = teamInv.getContents();
+			ItemStack[] contents = toOverwrite.getContents();
 			List<?> toLoadInv = Manhunt.plugin.getConfig().getList(configurationPath);
 			for(int i = 0; i<toLoadInv.size();i++) {
 				System.out.println("Loading... "+toLoadInv.get(i));
 				contents[i] = (ItemStack) toLoadInv.get(i);
 			}	
-			teamInv.setContents(contents);
+			toOverwrite.setContents(contents);
 		}
-		return teamInv;
+		return toOverwrite;
 	}
 	
 }
