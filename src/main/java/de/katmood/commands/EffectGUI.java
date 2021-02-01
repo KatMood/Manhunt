@@ -40,6 +40,22 @@ import de.katmood.manhunt.Manhunt;
 public class EffectGUI implements CommandExecutor, Listener{
 	
 	
+	public static void applyEffectsToEveryPlayer() {
+		for(PotionEffectType currentPotionType : huntedEffects.keySet()) {
+			for(String currentPlayer : Manhunt.getHunteds())
+				if(huntedEffects.get(currentPotionType)>0)
+					Bukkit.getPlayer(currentPlayer).addPotionEffect(new PotionEffect(currentPotionType,99999, huntedEffects.get(currentPotionType)), true);
+		}
+		
+		for(PotionEffectType currentPotionType : hunterEffects.keySet()) {
+			for(String currentPlayer : Manhunt.getHunters())
+				if(hunterEffects.get(currentPotionType)>0)
+					Bukkit.getPlayer(currentPlayer).addPotionEffect(new PotionEffect(currentPotionType,99999, hunterEffects.get(currentPotionType)), true);
+		}
+		
+	}
+	
+	
 	static String effectListPath = "EFFECT_LIST";
 	public static void saveEffectLevelsInConfig() {
 		fillPotionEffectLists();
