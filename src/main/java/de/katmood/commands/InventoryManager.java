@@ -1,5 +1,6 @@
 package de.katmood.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -11,7 +12,14 @@ import de.katmood.manhunt.Manhunt;
 public class InventoryManager {
 	
 	public static void saveInv(String path, Inventory toSave) {
-		
+		ArrayList<ItemStack> itemStacks = new ArrayList<>();
+		ItemStack[] contents = toSave.getContents();
+		for(ItemStack cis : contents)
+			if(cis!=null)
+				itemStacks.add(cis);
+	
+		Manhunt.plugin.getConfig().set(path, itemStacks);
+		Manhunt.plugin.saveConfig();
 	}
 	
 	public static Inventory loadInv(String configurationPath) {
