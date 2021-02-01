@@ -44,13 +44,21 @@ public class EffectGUI implements CommandExecutor, Listener{
 		for(PotionEffectType currentPotionType : huntedEffects.keySet()) {
 			for(String currentPlayer : Manhunt.getHunteds())
 				if(huntedEffects.get(currentPotionType)>0)
-					Bukkit.getPlayer(currentPlayer).addPotionEffect(new PotionEffect(currentPotionType,99999, huntedEffects.get(currentPotionType)), true);
+					Bukkit.getPlayer(currentPlayer).addPotionEffect(new PotionEffect(currentPotionType,99999, huntedEffects.get(currentPotionType)-1), true);
 		}
 		
 		for(PotionEffectType currentPotionType : hunterEffects.keySet()) {
 			for(String currentPlayer : Manhunt.getHunters())
 				if(hunterEffects.get(currentPotionType)>0)
-					Bukkit.getPlayer(currentPlayer).addPotionEffect(new PotionEffect(currentPotionType,99999, hunterEffects.get(currentPotionType)), true);
+					Bukkit.getPlayer(currentPlayer).addPotionEffect(new PotionEffect(currentPotionType,99999, hunterEffects.get(currentPotionType)-1), true);
+		}
+		
+	}
+	
+	public static void removeEffectsFromEveryPlayer() {
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			for(PotionEffectType cpt : PotionEffectType.values())
+			p.removePotionEffect(cpt);
 		}
 		
 	}
@@ -149,7 +157,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 	static ItemStack minusButton() {
 		ItemStack toReturn = new ItemStack(Material.BLACK_DYE);
 		ItemMeta meta = toReturn.getItemMeta();
-		meta.setDisplayName("-1");
+		meta.setDisplayName(ChatColor.BOLD+"-1");
 		toReturn.setItemMeta(meta);
 		return toReturn;
 	}
@@ -157,7 +165,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 	static ItemStack plusButton() {
 		ItemStack toReturn = new ItemStack(Material.NETHER_STAR);
 		ItemMeta meta = toReturn.getItemMeta();
-		meta.setDisplayName("+1");
+		meta.setDisplayName(ChatColor.BOLD+"+1");
 		toReturn.setItemMeta(meta);
 		return toReturn;
 	}
