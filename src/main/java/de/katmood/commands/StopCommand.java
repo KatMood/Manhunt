@@ -18,6 +18,8 @@ public class StopCommand implements CommandExecutor {
 
         Manhunt.started = false;
 
+        Manhunt.timer.stop();
+
         Bukkit.broadcastMessage(Manhunt.prefix+"§cDas Spiel wurde gestoppt");
 
         for(int i = 0; i < Bukkit.getOnlinePlayers().size(); i++) {
@@ -25,7 +27,6 @@ public class StopCommand implements CommandExecutor {
             Manhunt.Frozen.put(target.getName(), 0);
         }
 
-        Manhunt.timer.stop();
 
         return false;
     }
