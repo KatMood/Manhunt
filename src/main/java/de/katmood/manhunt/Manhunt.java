@@ -63,6 +63,9 @@ public class Manhunt extends JavaPlugin {
 
     public static Inventory huntedinv = Bukkit.createInventory(null, 9*3, "§a§lTeam Inventar");
     public static Inventory hunterinv = Bukkit.createInventory(null, 9*3, "§a§lTeam Inventar");
+    
+    public static final String huntedInvSavePath = "INVENTORY_HUNTED";
+    public static final String hunterInvSavePath = "INVENTORY_HUNTER";
 
     public static String prefix = "§7[§bKat§7] ";
     public static String lprefix = "§7§l[[§b§lKat§7§l] ";
@@ -173,6 +176,16 @@ public class Manhunt extends JavaPlugin {
         time = plugin.getConfig().getInt(Timer+".Time");
     }
 
+    public static void loadTeamInventories() {
+    	huntedinv = InventoryManager.loadInv(huntedInvSavePath, huntedinv);
+    	hunterinv = InventoryManager.loadInv(hunterInvSavePath, hunterinv);
+    }
+    
+    public static void saveTeamInventories() {
+    	InventoryManager.saveInv(huntedInvSavePath, huntedinv);
+    	InventoryManager.saveInv(hunterInvSavePath, hunterinv);
+    }
+    
     public static void savePlayerData() {
 
         for(OfflinePlayer cp : Bukkit.getOfflinePlayers()) {
@@ -247,6 +260,7 @@ public class Manhunt extends JavaPlugin {
         loadTimer();
         loadTeamConfig();
         loadRunnable();
+        loadTeamInventories();
 
         Moderators.put("KatMood", true);
 
@@ -295,5 +309,6 @@ public class Manhunt extends JavaPlugin {
        savePlayerData();
        saveTeamConfig();
        saveTimer();
+       saveTeamInventories();
     }
 }
