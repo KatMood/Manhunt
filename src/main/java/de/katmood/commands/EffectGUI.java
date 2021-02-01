@@ -157,7 +157,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 	static ItemStack minusButton() {
 		ItemStack toReturn = new ItemStack(Material.BLACK_DYE);
 		ItemMeta meta = toReturn.getItemMeta();
-		meta.setDisplayName("-1");
+		meta.setDisplayName(ChatColor.BOLD+"-1");
 		toReturn.setItemMeta(meta);
 		return toReturn;
 	}
@@ -165,7 +165,7 @@ public class EffectGUI implements CommandExecutor, Listener{
 	static ItemStack plusButton() {
 		ItemStack toReturn = new ItemStack(Material.NETHER_STAR);
 		ItemMeta meta = toReturn.getItemMeta();
-		meta.setDisplayName("+1");
+		meta.setDisplayName(ChatColor.BOLD+"+1");
 		toReturn.setItemMeta(meta);
 		return toReturn;
 	}
