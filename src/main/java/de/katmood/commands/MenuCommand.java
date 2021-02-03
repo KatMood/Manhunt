@@ -48,16 +48,28 @@ public class MenuCommand implements Listener, CommandExecutor {
                     p.performCommand("gameoptionsgui");
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§d§lEffekte")) {
-                    p.closeInventory();
-                    p.performCommand("effectgui");
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        p.closeInventory();
+                        p.performCommand("effectgui");
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um die Einstellungen zu ändern!");
+                    }
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§a§lStart")) {
-                    p.closeInventory();
-                    p.performCommand("start");
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        p.closeInventory();
+                        p.performCommand("start");
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um das Spiel zu starten!");
+                    }
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§c§lStop")) {
-                    p.closeInventory();
-                    p.performCommand("stop");
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        p.closeInventory();
+                        p.performCommand("stop");
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um das Spiel zu stoppen!");
+                    }
                 }
             }
         }

@@ -13,20 +13,22 @@ public class PlayerChatEvent implements Listener {
     public void onChat(AsyncPlayerChatEvent e){
         Player p = e.getPlayer();
         String msg = e.getMessage();
-        if(e.getMessage().startsWith("#")){
-            if(Manhunt.teamchat){
-                if(Manhunt.Hunted.get(p.getName())){
-                    for(Player hunted : Bukkit.getOnlinePlayers()){
-                        if(Manhunt.Hunted.get(hunted.getName())){
-                            e.setCancelled(true);
-                            hunted.sendMessage("§7[TC] §a"+p.getName()+" §8>> §7"+msg.replaceAll("#", "§7"));
+        if(Manhunt.tchat) {
+            if(e.getMessage().startsWith("#")){
+                if(Manhunt.teamchat){
+                    if(Manhunt.Hunted.get(p.getName())){
+                        for(Player hunted : Bukkit.getOnlinePlayers()){
+                            if(Manhunt.Hunted.get(hunted.getName())){
+                                e.setCancelled(true);
+                                hunted.sendMessage("§7[TC] §a"+p.getName()+" §8>> §7"+msg.replaceAll("#", "§7"));
+                            }
                         }
-                    }
-                } else if(!Manhunt.Hunted.get((p.getName()))){
-                    for(Player hunter : Bukkit.getOnlinePlayers()){
-                        if(!Manhunt.Hunted.get(hunter.getName())){
-                            e.setCancelled(true);
-                            hunter.sendMessage("§7[TC] §c"+p.getName()+" §8>> §7"+msg.replaceAll("#", "§7"));
+                    } else if(!Manhunt.Hunted.get((p.getName()))){
+                        for(Player hunter : Bukkit.getOnlinePlayers()){
+                            if(!Manhunt.Hunted.get(hunter.getName())){
+                                e.setCancelled(true);
+                                hunter.sendMessage("§7[TC] §c"+p.getName()+" §8>> §7"+msg.replaceAll("#", "§7"));
+                            }
                         }
                     }
                 }

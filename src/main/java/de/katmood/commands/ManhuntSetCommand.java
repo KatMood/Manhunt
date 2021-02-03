@@ -112,10 +112,18 @@ public class ManhuntSetCommand implements Listener, CommandExecutor {
                 if(e.getCurrentItem().hasItemMeta()){
                     if(e.getCurrentItem().getType() == Material.PLAYER_HEAD){
                         if(e.getCurrentItem().getItemMeta().getDisplayName().startsWith("§a")){
-                            Manhunt.Hunted.put(e.getCurrentItem().getItemMeta().getDisplayName().replace("§a", ""), false);
+                            if(Manhunt.getMods().contains(p.getName())) {
+                                Manhunt.Hunted.put(e.getCurrentItem().getItemMeta().getDisplayName().replace("§a", ""), false);
+                            } else {
+                                p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um die Einstellungen zu ändern!");
+                            }
                         }
                         if(e.getCurrentItem().getItemMeta().getDisplayName().startsWith("§c")){
-                            Manhunt.Hunted.put(e.getCurrentItem().getItemMeta().getDisplayName().replace("§c", ""), true);
+                            if(Manhunt.getMods().contains(p.getName())) {
+                                Manhunt.Hunted.put(e.getCurrentItem().getItemMeta().getDisplayName().replace("§c", ""), true);
+                            } else {
+                                p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um die Einstellungen zu ändern!");
+                            }
                         }
                     }
                     if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cClose")){
