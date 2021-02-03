@@ -7,6 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class startCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -17,6 +19,11 @@ public class startCommand implements CommandExecutor {
         Player p = (Player) sender;
 
         Manhunt.started = true;
+
+        for(Player cp : Bukkit.getOnlinePlayers()) {
+            Manhunt.Alive.put(cp.getName(), true);
+            Manhunt.savePlayerData();
+        }
 
         Bukkit.broadcastMessage(Manhunt.prefix+"§aDas Spiel wurde gestartet!");
         String message = Manhunt.prefix+"§7";

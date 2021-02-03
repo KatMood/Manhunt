@@ -114,6 +114,7 @@ public class ManhuntSetCommand implements Listener, CommandExecutor {
                         if(e.getCurrentItem().getItemMeta().getDisplayName().startsWith("§a")){
                             if(Manhunt.getMods().contains(p.getName())) {
                                 Manhunt.Hunted.put(e.getCurrentItem().getItemMeta().getDisplayName().replace("§a", ""), false);
+                                Manhunt.savePlayerData();
                             } else {
                                 p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um die Einstellungen zu ändern!");
                             }
@@ -121,6 +122,7 @@ public class ManhuntSetCommand implements Listener, CommandExecutor {
                         if(e.getCurrentItem().getItemMeta().getDisplayName().startsWith("§c")){
                             if(Manhunt.getMods().contains(p.getName())) {
                                 Manhunt.Hunted.put(e.getCurrentItem().getItemMeta().getDisplayName().replace("§c", ""), true);
+                                Manhunt.savePlayerData();
                             } else {
                                 p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um die Einstellungen zu ändern!");
                             }
