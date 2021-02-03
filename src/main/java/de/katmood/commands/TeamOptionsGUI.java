@@ -129,28 +129,52 @@ public class TeamOptionsGUI implements Listener, CommandExecutor {
             e.setCancelled(true);
             if(e.getCurrentItem().hasItemMeta()){
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§3§lTeamTeleport §7§l¦ §c§lINAKTIV")){
-                    Manhunt.ttp = true;
-                    Manhunt.saveTeamConfig();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.ttp = true;
+                        Manhunt.saveTeamConfig();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§3§lTeamTeleport §7§l¦ §a§lAKTIV")){
-                    Manhunt.ttp = false;
-                    Manhunt.saveTeamConfig();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.ttp = false;
+                        Manhunt.saveTeamConfig();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§2§lTeamInventar §7§l¦ §c§lINAKTIV")){
-                    Manhunt.tinv = true;
-                    Manhunt.saveTeamConfig();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.tinv = true;
+                        Manhunt.saveTeamConfig();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§2§lTeamInventar §7§l¦ §a§lAKTIV")){
-                    Manhunt.tinv = false;
-                    Manhunt.saveTeamConfig();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.tinv = false;
+                        Manhunt.saveTeamConfig();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§lTeamChat §7§l¦ §c§lINAKTIV")){
-                    Manhunt.tchat = true;
-                    Manhunt.saveTeamConfig();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.tchat = true;
+                        Manhunt.saveTeamConfig();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§lTeamChat §7§l¦ §a§lAKTIV")){
-                    Manhunt.tchat = false;
-                    Manhunt.saveTeamConfig();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.tchat = false;
+                        Manhunt.saveTeamConfig();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cClose")){
                     p.closeInventory();

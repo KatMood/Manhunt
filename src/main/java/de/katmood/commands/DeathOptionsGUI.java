@@ -35,10 +35,18 @@ public class DeathOptionsGUI implements Listener, CommandExecutor {
         if(invname.equalsIgnoreCase("§c§lTodes Optionen")) {
             e.setCancelled(true);
             if(itemname.equalsIgnoreCase("§7§lAlle")) {
-                Manhunt.kill_all = true;
+                if(Manhunt.getMods().contains(p.getName())) {
+                    Manhunt.kill_all = true;
+                } else {
+                    p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                }
             }
             if(itemname.equalsIgnoreCase("§7§lEiner")) {
-                Manhunt.kill_all = false;
+                if(Manhunt.getMods().contains(p.getName())) {
+                    Manhunt.kill_all = false;
+                } else {
+                    p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                }
             }
             renderWieViele(e.getInventory());
         }

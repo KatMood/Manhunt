@@ -100,12 +100,20 @@ public class TimerOptionsGUI implements Listener, CommandExecutor {
             e.setCancelled(true);
             if(e.getCurrentItem().hasItemMeta()){
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§5§lTimer §7§l¦ §a§lAktiv")) {
-                    Manhunt.timerenabled = false;
-                    Manhunt.saveTimer();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.timerenabled = false;
+                        Manhunt.saveTimer();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§5§lTimer §7§l¦ §c§lInaktiv")) {
-                    Manhunt.timerenabled = true;
-                    Manhunt.saveTimer();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.timerenabled = true;
+                        Manhunt.saveTimer();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cClose")){
                     p.closeInventory();

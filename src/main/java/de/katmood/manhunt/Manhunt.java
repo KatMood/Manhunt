@@ -59,6 +59,15 @@ public class Manhunt extends JavaPlugin {
         return hunters;
     }
 
+    public static ArrayList<String> getMods() {
+        ArrayList<String> mods = new ArrayList<>();
+        for(String ck : Moderators.keySet()) {
+            if(Moderators.get(ck))
+                mods.add(ck);
+        }
+        return mods;
+    }
+
     public static Timer timer = new Timer();
 
     public static Inventory huntedinv = Bukkit.createInventory(null, 9*3, "§a§lTeam Inventar");

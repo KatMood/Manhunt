@@ -48,46 +48,83 @@ public class GameOptionsGUI implements Listener, CommandExecutor {
                     Manhunt.freeze = false;
                     Manhunt.freezeTime = 0;
                     Manhunt.saveGameData();
+                    if(Manhunt.getMods().contains(p.getName())) {
+
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(itemname.equalsIgnoreCase("§f§l5 Sekunken")) {
-                    Manhunt.freeze = true;
-                    Manhunt.freezeTime = 5;
-                    Manhunt.saveGameData();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.freeze = true;
+                        Manhunt.freezeTime = 5;
+                        Manhunt.saveGameData();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(itemname.equalsIgnoreCase("§f§l10 Sekunken")) {
-                    Manhunt.freeze = true;
-                    Manhunt.freezeTime = 10;
-                    Manhunt.saveGameData();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.freeze = true;
+                        Manhunt.freezeTime = 10;
+                        Manhunt.saveGameData();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(itemname.equalsIgnoreCase("§f§l15 Sekunken")) {
-                    Manhunt.freeze = true;
-                    Manhunt.freezeTime = 15;
-                    Manhunt.saveGameData();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.freeze = true;
+                        Manhunt.freezeTime = 15;
+                        Manhunt.saveGameData();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(itemname.equalsIgnoreCase("§f§l30 Sekunken")) {
-                    Manhunt.freeze = true;
-                    Manhunt.freezeTime = 30;
-                    Manhunt.saveGameData();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.freeze = true;
+                        Manhunt.freezeTime = 30;
+                        Manhunt.saveGameData();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(itemname.equalsIgnoreCase("§f§l1 Minute")) {
-                    Manhunt.freeze = true;
-                    Manhunt.freezeTime = 60;
-                    Manhunt.saveGameData();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.freeze = true;
+                        Manhunt.freezeTime = 60;
+                        Manhunt.saveGameData();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(itemname.equalsIgnoreCase("§f§l2 Minuten")) {
-                    Manhunt.freeze = true;
-                    Manhunt.freezeTime = 120;
-                    Manhunt.saveGameData();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.freeze = true;
+                        Manhunt.freezeTime = 120;
+                        Manhunt.saveGameData();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(itemname.equalsIgnoreCase("§f§l3 Minuten")) {
-                    Manhunt.freeze = true;
-                    Manhunt.freezeTime = 180;
-                    Manhunt.saveGameData();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.freeze = true;
+                        Manhunt.freezeTime = 180;
+                        Manhunt.saveGameData();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 if(itemname.equalsIgnoreCase("§f§l5 Minuten")) {
-                    Manhunt.freeze = true;
-                    Manhunt.freezeTime = 300;
-                    Manhunt.saveGameData();
+                    if(Manhunt.getMods().contains(p.getName())) {
+                        Manhunt.freeze = true;
+                        Manhunt.freezeTime = 300;
+                        Manhunt.saveGameData();
+                    } else {
+                        p.sendMessage(Manhunt.prefix+"§cDu musst Moderator sein um Einstellungen zu ändern!");
+                    }
                 }
                 renderFreeze(e.getInventory());
         }
