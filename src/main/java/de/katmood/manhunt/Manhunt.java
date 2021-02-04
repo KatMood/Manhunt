@@ -92,6 +92,7 @@ public class Manhunt extends JavaPlugin {
     public static String GameOpsPath = "Options";
     public static String FreezePath = "Freeze";
     public static String FreezeTimePath = "FreezeTime";
+    public static String KillAllPath = "Kill all";
 
     public static boolean teamchat = true;
     public static boolean timerenabled = true;
@@ -149,6 +150,7 @@ public class Manhunt extends JavaPlugin {
         plugin.getConfig().set(game+"."+Started, started);
         plugin.getConfig().set(game+"."+GameOpsPath+"."+FreezePath, freeze);
         plugin.getConfig().set(game+"."+GameOpsPath+"."+FreezeTimePath, freezeTime);
+        plugin.getConfig().set(game+"."+GameOpsPath+"."+KillAllPath, kill_all);
         plugin.saveConfig();
     }
 
@@ -156,6 +158,7 @@ public class Manhunt extends JavaPlugin {
         started = plugin.getConfig().getBoolean(game+"."+Started);
         freeze = plugin.getConfig().getBoolean(game+"."+GameOpsPath+"."+FreezePath);
         freezeTime = plugin.getConfig().getInt(game+"."+GameOpsPath+"."+FreezeTimePath);
+        kill_all = plugin.getConfig().getBoolean(game+"."+GameOpsPath+"."+KillAllPath);
     }
 
     public static void saveTeamConfig(){
