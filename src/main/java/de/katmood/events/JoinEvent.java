@@ -26,5 +26,8 @@ public class JoinEvent implements Listener {
                 }
             }
         }
+        if(!Manhunt.getMods().contains(p.getName())) {
+            Manhunt.Moderators.put(p.getName(), false);
+        }
     }
 }
