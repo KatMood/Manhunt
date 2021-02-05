@@ -26,7 +26,11 @@ public class startCommand implements CommandExecutor {
         Manhunt.hunterinv.clear();
         Manhunt.saveTeamInventories();
 
-        Manhunt.AliveHunteds = Manhunt.getHunteds().size();
+        if(Manhunt.kill_all) {
+            Manhunt.AliveHunteds = Manhunt.getHunteds().size();
+        }
+        if(!Manhunt.kill_all)
+            Manhunt.AliveHunteds = 1;
 
         for(Player cp : Bukkit.getOnlinePlayers()) {
             Manhunt.Alive.put(cp.getName(), true);
