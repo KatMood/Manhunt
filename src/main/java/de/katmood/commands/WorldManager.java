@@ -32,7 +32,7 @@ public class WorldManager implements Listener{
 		e.getPlayer().teleport(new Location(Bukkit.getWorld(mainWorldName), e.getPlayer().getLocation().getX(), e.getPlayer().getLocation().getY(), e.getPlayer().getLocation().getZ()));
 	}
 
-	public static void createBackup(String BackupWorldName, World toBackup) {
+	public static void copyWorld(String BackupWorldName, World toBackup) {			//Warnung: Generiert nur eine Welt mit den Selben Einstellungen!
 		WorldCreator wc = new WorldCreator(BackupWorldName);
 		wc.copy(toBackup);
 		wc.createWorld();
