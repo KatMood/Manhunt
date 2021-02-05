@@ -2,6 +2,7 @@ package de.katmood.commands;
 
 import de.katmood.manhunt.Manhunt;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,11 @@ public class StopCommand implements CommandExecutor {
         Player p = (Player) sender;
 
         Manhunt.started = false;
+
+        for(Player cp : Bukkit.getOnlinePlayers()) {
+            cp.setGameMode(GameMode.SURVIVAL);
+            cp.getInventory().clear();
+        }
 
         Manhunt.timer.stop();
 

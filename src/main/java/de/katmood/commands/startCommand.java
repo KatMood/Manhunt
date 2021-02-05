@@ -2,6 +2,7 @@ package de.katmood.commands;
 
 import de.katmood.manhunt.Manhunt;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,6 +24,11 @@ public class startCommand implements CommandExecutor {
         for(Player cp : Bukkit.getOnlinePlayers()) {
             Manhunt.Alive.put(cp.getName(), true);
             Manhunt.savePlayerData();
+        }
+
+        for(Player cp : Bukkit.getOnlinePlayers()) {
+            cp.setGameMode(GameMode.SURVIVAL);
+            cp.getInventory().clear();
         }
 
         Bukkit.broadcastMessage(Manhunt.prefix+"§aDas Spiel wurde gestartet!");
