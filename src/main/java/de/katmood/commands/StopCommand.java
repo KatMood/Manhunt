@@ -19,6 +19,10 @@ public class StopCommand implements CommandExecutor {
 
         Manhunt.started = false;
 
+        Manhunt.huntedinv.clear();
+        Manhunt.hunterinv.clear();
+        Manhunt.saveTeamInventories();
+
         for(Player cp : Bukkit.getOnlinePlayers()) {
             cp.setGameMode(GameMode.SURVIVAL);
             cp.getInventory().clear();
