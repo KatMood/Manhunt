@@ -17,8 +17,6 @@ commands:
     aliases:
       - mhl
 
-  heal:
-
   menu:
     description: Oeffnet das Menu
 

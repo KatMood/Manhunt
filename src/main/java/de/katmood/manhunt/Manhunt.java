@@ -307,7 +307,6 @@ public class Manhunt extends JavaPlugin {
         getCommand("manhuntset").setExecutor(new ManhuntSetCommand());
         getCommand("manhuntsetgui").setExecutor(new ManhuntSetCommand());
         getCommand("manhuntlist").setExecutor(new ManhuntListCommand());
-        getCommand("heal").setExecutor(new HealCommand());
         getCommand("menu").setExecutor(new MenuCommand());
         getCommand("timeroptionsgui").setExecutor(new TimerOptionsGUI());
         getCommand("timer").setExecutor(new TimerCommand());
