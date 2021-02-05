@@ -11,10 +11,7 @@ import org.bukkit.entity.Player;
 public class StopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if(!(sender instanceof Player))
-            sender.sendMessage(Manhunt.noplayer);
-
+/*
         Player p = (Player) sender;
 
         Manhunt.started = false;
@@ -37,7 +34,9 @@ public class StopCommand implements CommandExecutor {
             Manhunt.Frozen.put(target, 0);
 
         }
+ */
 
+        Manhunt.stopCommand();
 
         return false;
     }

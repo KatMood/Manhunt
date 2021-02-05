@@ -7,6 +7,7 @@ import de.katmood.events.PlayerChatEvent;
 import de.katmood.events.PlayerMove;
 import de.katmood.timer.Timer;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -106,6 +107,30 @@ public class Manhunt extends JavaPlugin {
 
     public static int time;
     public static int freezeTime = 0;
+    public static int AliveHunteds;
+
+    public static void stopCommand() {
+        Manhunt.started = false;
+
+        Manhunt.huntedinv.clear();
+        Manhunt.hunterinv.clear();
+        Manhunt.saveTeamInventories();
+
+        for(Player cp : Bukkit.getOnlinePlayers()) {
+            cp.setGameMode(GameMode.SURVIVAL);
+            cp.getInventory().clear();
+        }
+
+        Manhunt.timer.stop();
+
+        Bukkit.broadcastMessage(Manhunt.prefix+"§cDas Spiel wurde gestoppt");
+
+        for(int i = 0; i < Bukkit.getOnlinePlayers().size(); i++) {
+            String target = Bukkit.getOfflinePlayers()[i].getPlayer().getName();
+            Manhunt.Frozen.put(target, 0);
+
+        }
+    }
 
     public static void freezePlayer(Player p, int time) {
         Frozen.put(p.getName(), time);

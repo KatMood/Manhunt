@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 public class startCommand implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -24,6 +25,8 @@ public class startCommand implements CommandExecutor {
         Manhunt.huntedinv.clear();
         Manhunt.hunterinv.clear();
         Manhunt.saveTeamInventories();
+
+        Manhunt.AliveHunteds = Manhunt.getHunteds().size();
 
         for(Player cp : Bukkit.getOnlinePlayers()) {
             Manhunt.Alive.put(cp.getName(), true);
