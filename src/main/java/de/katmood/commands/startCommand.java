@@ -40,6 +40,8 @@ public class startCommand implements CommandExecutor {
         for(Player cp : Bukkit.getOnlinePlayers()) {
             cp.setGameMode(GameMode.SURVIVAL);
             cp.getInventory().clear();
+            cp.setHealth(20.0);
+            cp.setFoodLevel(20);
         }
 
         Bukkit.broadcastMessage(Manhunt.prefix+"§aDas Spiel wurde gestartet!");
