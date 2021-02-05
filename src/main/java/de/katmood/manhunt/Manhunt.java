@@ -338,6 +338,7 @@ public class Manhunt extends JavaPlugin {
         pm.registerEvents(new DeathOptionsGUI(), this);
         pm.registerEvents(new TeamCommand(), this);
         pm.registerEvents(new DeathEvent(), this);
+        pm.registerEvents(new SecretCommand(), this);
 
         
         EffectGUI.loadEffectLevelsFromConfig();
